@@ -19,3 +19,8 @@ License
 This Program is licensed under CC-BY-SA 2,5 (German Verison)
 
 https://creativecommons.org/licenses/by-sa/2.5/deed.de
+
+Programs Used
+=================
+
+http://railsapps.github.com/tutorial-rails-bootstrap-devise-cancan.html
