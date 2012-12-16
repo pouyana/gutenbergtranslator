@@ -6,6 +6,7 @@ group :development, :test do
 end
 group :production do
   gem 'pg'
+  gem 'thin'
 end
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
