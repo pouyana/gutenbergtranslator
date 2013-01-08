@@ -198,6 +198,7 @@ DEPENDENCIES
   factory_girl_rails (>= 4.1.0)
   jquery-rails
   launchy (>= 2.1.2)
+  nokogiri
   pg
   quiet_assets (>= 1.0.1)
   rails (= 3.2.9)
