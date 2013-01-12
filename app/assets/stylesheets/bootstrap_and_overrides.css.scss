@@ -2,6 +2,8 @@
 body { padding-top: 60px; direction:rtl }
 .navbar .brand {float:right}
 div.span8 {float:right}
+.navbar .nav > li > a >img {float:left;display:inline;padding:0px}
+.navbar .nav > li >img {float:left;display:inline;padding:0px}
 @import "bootstrap-responsive"
 
 
