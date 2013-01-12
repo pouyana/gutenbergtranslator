@@ -1,5 +1,9 @@
 Gutenbergtranslator::Application.routes.draw do
 
+  get "set_language/english"
+
+  get "set_language/persian"
+
   get "static_pages/home"
   get "static_pages/help"
   match '/:locale' => "home#index"
@@ -12,10 +16,7 @@ Gutenbergtranslator::Application.routes.draw do
   root :to => "home#index"
   scope "/:locale" do 
    devise_for :users
-  end
-#  devise_for :users
-  resources :users
-   
+  end  
   scope "/:locale" do
    resources :users
   end
