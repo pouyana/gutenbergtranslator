@@ -1,14 +1,24 @@
 Gutenbergtranslator::Application.routes.draw do
+
   get "static_pages/home"
-
   get "static_pages/help"
-
+  match '/:locale' => "home#index"
+  match '/:locale/static_pages/home' => "static_pages#home"
+  match '/:locale/static_pages/help' => "static_pages#home"
+ 
   authenticated :user do
-    root :to => 'home#index'
+   root :to => 'home#index'
   end
   root :to => "home#index"
-  devise_for :users
+  scope "/:locale" do 
+   devise_for :users
+  end
+#  devise_for :users
   resources :users
+   
+  scope "/:locale" do
+   resources :users
+  end
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

@@ -1,4 +1,5 @@
-<%= link_to "سیستم ترجمه گوتنبرگ", root_path, :class => 'brand' %>
+<% title = t :gutenberg_translator_system %>
+<%= link_to title , root_path, :class => 'brand' %>
 <ul class="nav">
   <% if user_signed_in? %>
     <li>
