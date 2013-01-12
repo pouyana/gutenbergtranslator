@@ -2,13 +2,8 @@
 <%= link_to title , root_path, :class => 'brand' %>
 <ul class="nav">
      <li>
-<<<<<<< HEAD
-    <%= link_to, image_tag('en.png'), set_language_english_path %><%= link_to, image_tag('ir.png'), set_language_persian_path %>
-=======
-<%= link_to_unless I18n.locale == :en, "English", set_language_english_path %>
-|
-<%= link_to_unless I18n.locale == :fa, "Farsi", set_language_persian_path %>
->>>>>>> parent of 0ba4acc... add flags
+<%= link_to_unless I18n.locale == :en,image_tag('en.png'), set_language_english_path %>
+<%= link_to_unless I18n.locale == :fa, image_tag('fa.png'), set_language_persian_path %>
      </li>
   <% if user_signed_in? %>
     <li>
