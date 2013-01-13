@@ -12,8 +12,8 @@
  * = require bootstrap_and_overrides
  */
 
-$dir: ltr !default;
-$opdir: rtl !default;
+$dir: rtl !default;
+$opdir: ltr !default;
 
 body {
 direction:$dir
