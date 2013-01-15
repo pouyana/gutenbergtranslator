@@ -1,5 +1,7 @@
 <% title = t :gutenberg_translator_system %>
 <%= link_to title , root_path, :class => 'brand' %>
+
+<% if I18n.locale == :fa %>
 <ul class="nav">
      <li class="flag">
     <%= link_to_unless I18n.locale == :en, image_tag('en.png'), locale: :en %>
@@ -9,25 +11,60 @@
      </li>
   <% if user_signed_in? %>
     <li>
-    <%= link_to('خروج', destroy_user_session_path, :method=>'delete') %>
+    <%= link_to((t :signout), destroy_user_session_path, :method=>'delete') %>
     </li>
   <% else %>
     <li>
-    <%= link_to('ورود', new_user_session_path) %>
+    <%= link_to((t :signin), new_user_session_path) %>
     </li>
   <% end %>
   <% if user_signed_in? %>
     <li>
-    <%= link_to('مدیریت فضای کاربری', edit_user_registration_path) %>
+    <%= link_to((t :usermanagment), edit_user_registration_path) %>
     </li>
     <% if current_user.has_role? :admin %>
       <li>
-      <%= link_to('مدیریت', users_path) %>
+      <%= link_to((t :useradmin), users_path) %>
       </li>
     <% end %>
   <% else %>
     <li>
-    <%= link_to('ثبت نام', new_user_registration_path) %>
+    <%= link_to( (t :signup), new_user_registration_path) %>
     </li>
   <% end %>
+<%end%>
+
+<!-- to make rtl and ltr menu seen good as it is have to duplicate the setting -->
+<% if I18n.locale == :en %>
+<ul class="nav">
+  <% if user_signed_in? %>
+    <li>
+    <%= link_to((t :usermanagment), edit_user_registration_path) %>
+    </li>
+    <% if current_user.has_role? :admin %>
+      <li>
+      <%= link_to((t :useradmin), users_path) %>
+      </li>
+    <% end %>
+  <% else %>
+    <li>
+    <%= link_to( (t :signup), new_user_registration_path) %>
+    </li>
+  <% end %>
+  <% if user_signed_in? %>
+    <li>
+    <%= link_to((t :signout), destroy_user_session_path, :method=>'delete') %>
+    </li>
+  <% else %>
+    <li>
+    <%= link_to((t :signin), new_user_session_path) %>
+    </li>
+  <% end %>
+    <li class="flag">
+    <%= link_to_unless I18n.locale == :en, image_tag('en.png'), locale: :en %>
+    </li>
+    <li class="flag">
+<%= link_to_unless I18n.locale == :fa, image_tag('ir.png'), locale: :fa %>
+     </li>
+<%end%>
 </ul>

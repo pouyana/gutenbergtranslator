@@ -4,4 +4,11 @@
 en:
   hello: "Hello world"
   home: "Home"
-  gutenber_gtranslator_system: "Gutenberg Translator Project"
+  user: "User"
+  users: "Users"
+  signin: "Sign in"
+  signup: "Sign up"
+  signout: "Sign out"
+  usermanagment: "Settings"
+  useradmin:  "Administration"
+  gutenberg_translator_system: "Gutenberg Translator Project"

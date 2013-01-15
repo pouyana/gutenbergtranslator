@@ -1,4 +1,12 @@
 fa:
   hello: "سلام"
   home: "خانه"
+  user: "کاربر"
+  users: "کاربران"
+  signin: "ورود"
+  signup: "ثیت‌نام"
+  signout: "خروج"
+  usermanagment: "تنظیمات کاربر"
+  useradmin:  "مدیریت"
   gutenberg_translator_system : "پروژه ترجمه گوتنبرگ"
+

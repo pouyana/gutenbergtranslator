@@ -9,15 +9,15 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  * = require_self
- * = require bootstrap_and_overrides
+ * = require bootstrap_and_overrides_rtl
  */
 
 $dir: rtl !default;
 $opdir: ltr !default;
-
 body {
 direction:$dir
 }
+
 .content {
   background-color: #eee;
   padding: 20px;

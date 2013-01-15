@@ -1,4 +1,4 @@
 <h3><%= t :home =%></h3>
 <% @users.each do |user| %>
-  <p>کاربر <%=link_to user.name, user %></p>
+  <p><%= t :user%> <%=link_to user.name, user %></p>
 <% end %>
