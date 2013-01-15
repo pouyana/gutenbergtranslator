@@ -1,0 +1,10 @@
+@import "bootstrap";
+$fldir : right;
+body { padding-top: 60px }
+.navbar .brand {float:$fldir}
+div.span8 {float:$fldir}
+.navbar .nav .flag { padding:10px 10px 0px 0px}
+.navbar .nav .flag > a {padding:0px 0px 0px 0px}
+@import "bootstrap-responsive"
+
+
