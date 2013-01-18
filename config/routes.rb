@@ -1,5 +1,7 @@
 Gutenbergtranslator::Application.routes.draw do
 
+  get "books/new"
+
   get "static_pages/home"
   get "static_pages/help"
 
