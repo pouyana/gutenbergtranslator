@@ -1,3 +1,3 @@
-<h3>User</h3>
-<p>User: <%= @user.name %></p>
-<p>Email: <%= @user.email if @user.email %></p>
+<h3><%= (t :user)%></h3>
+<p><%=(t :user)%> <%= @user.name %></p>
+<p><%=(t :email)%> <%= @user.email if @user.email %></p>

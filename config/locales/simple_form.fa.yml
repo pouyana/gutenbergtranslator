@@ -1,0 +1,33 @@
+fa:
+  simple_form:
+    "yes": 'بله'
+    "no": 'خیر'
+    required:
+      text: 'نیاز'
+      mark: '*'
+      html: '<abbr title="لازم">*</abbr>'
+    error_notification:
+      default_message: "لطفا موارد زیر را بررسی کنید"
+    labels:
+       defaults:
+         password: 'رمز عبور'
+       user:
+         new:
+           sign_in: 'ورود'
+           name: 'نام'
+           email: 'ایمیل'
+           password: 'رمز عبور'
+           password_confirmation: 'تایید رمز عبور'
+           submit: 'ثبت'
+           remember_me: 'یادآوری کن'
+         edit:
+           name: 'نام'
+           password: 'رمز عبور'
+           password_confirmation: 'تکرار رمز عبور'
+           current_password: 'رمز عبور کنونی'
+           email: 'ایمیل'
+           submit: 'به‌روزرسانی'
+       hints:
+         password: 'خالی بگذارید اگر نمی‌خواهید تغییر دهید'
+         current_password: 'برای تغییر رمز عبور خود را باید وارد کنید'
+

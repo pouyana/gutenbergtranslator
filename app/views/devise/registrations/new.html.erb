@@ -1,4 +1,4 @@
-<h2>Sign up</h2>
+<h2><%= t :signup%></h2>
 <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-vertical' }) do |f| %>
   <%= f.error_notification %>
   <%= display_base_errors resource %>
@@ -6,6 +6,7 @@
   <%= f.input :email, :required => true %>
   <%= f.input :password, :required => true %>
   <%= f.input :password_confirmation, :required => true %>
-  <%= f.button :submit, 'Sign up', :class => 'btn-primary' %>
+  <% submit_label = (t 'simple_form.labels.user.new.submit') %>
+  <%= f.button :submit, submit_label , :class => 'btn-primary' %>
 <% end %>
 <%= render "devise/shared/links" %>

@@ -1,10 +1,23 @@
 @import "bootstrap";
 $fldir : right;
-body { padding-top: 60px }
+body { 
+      padding-top: 60px;
+      font-family: Tahoma,'DejaVu Sans',sans-serif;
+      font-size: 90%;
+}
+.table th,
+.table td {
+  text-align: center;
+}
 .navbar .brand {float:$fldir}
 div.span8 {float:$fldir}
 .navbar .nav .flag { padding:10px 10px 0px 0px}
 .navbar .nav .flag > a {padding:0px 0px 0px 0px}
+.radio input[type="radio"],
+.checkbox input[type="checkbox"] {
+  float: right;
+  margin-left: -20px;
+}
 @import "bootstrap-responsive"
 
 

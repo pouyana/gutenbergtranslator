@@ -31,7 +31,6 @@ class GutenbergText
       "Size: "            + @size.to_s + "\n"
   end 
 end
-  def creator(url)
 
 info = GutenbergText.new
 counter = 0
@@ -39,7 +38,7 @@ counter = 0
 text_start = 100
 
 File.open("gut.text","w"){|g|
-  open(url) {|f|
+  open("http://www.gutenberg.org/cache/epub/41858/pg41858.txt") {|f|
     f.each_line{ |line|
      counter = counter + 1 
     if info.gutenberg.nil?
