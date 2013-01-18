@@ -1,16 +1,11 @@
 Gutenbergtranslator::Application.routes.draw do
 
-  get "set_language/english"
-  get "set_language/persian"
-
   get "static_pages/home"
   get "static_pages/help"
 
   match '/:locale' => "home#index"
   match '/:locale/static_pages/home' => "static_pages#home"
   match '/:locale/static_pages/help' => "static_pages#home"
-  match '/:locale/set_language/english' => "set_language#english"
-  match '/:locale/set_language/persian' => "set_language#persian"
   authenticated :user do
    root :to => 'home#index'
   end
