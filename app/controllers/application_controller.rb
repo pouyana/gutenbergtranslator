@@ -1,8 +1,7 @@
 class ApplicationController < ActionController::Base
 #this part is taken from ror i18l manual here:
 #http://guides.rubyonrails.org/i18n.html
-#and:
-#http://ruby-auf-schienen.de/3.2/i18n_mehrsprachige_rails_applikation.html
+#and http://ruby-auf-schienen.de/3.2/i18n_mehrsprachige_rails_applikation.html
   def self.default_url_options
     { :locale => I18n.locale }
   end
