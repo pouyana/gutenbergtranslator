@@ -11,18 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130118230612) do
+ActiveRecord::Schema.define(:version => 20130124184701) do
 
   create_table "books", :force => true do |t|
+    t.integer  "number"
     t.string   "title"
-    t.string   "license"
-    t.integer  "enumber"
     t.string   "author"
+    t.date     "released_date"
     t.string   "lang"
-    t.date     "release_date"
-    t.string   "charset"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.integer  "downloads"
+    t.integer  "size"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "roles", :force => true do |t|

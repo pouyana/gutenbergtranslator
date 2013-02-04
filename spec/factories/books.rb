@@ -2,12 +2,12 @@
 
 FactoryGirl.define do
   factory :book do
-    title "MyString"
-    license ""
-    enumber ""
+    number 1
+    title ""
     author "MyString"
+    released_date "2013-01-24"
     lang "MyString"
-    release_date "2013-01-19"
-    charset "MyString"
+    downloads 1
+    size 1
   end
 end

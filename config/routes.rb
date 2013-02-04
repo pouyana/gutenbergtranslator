@@ -1,6 +1,13 @@
 Gutenbergtranslator::Application.routes.draw do
-
-  get "books/new"
+  
+  resources :books do
+   get 'search', :on => :collection
+   post 'search', :on => :collection
+  end
+ 
+  scope ":locale" do
+   resources :books, :except => :destroy
+  end
 
   get "static_pages/home"
   get "static_pages/help"
