@@ -4,10 +4,11 @@
       <%= link_to_function "Clear", "$('search_field').clear()" %>
   <% end %> 
 <ul>
-
+<% if not (@books.length > 100) %>
 <% for book in @books %>
   <li>
     <%= book.title %>
   </li>
 <% end%>
+<%end%>
 </ul>

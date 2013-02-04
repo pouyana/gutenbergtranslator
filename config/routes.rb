@@ -1,9 +1,10 @@
 Gutenbergtranslator::Application.routes.draw do
-  
+  scope ":locale" do
   resources :books do
    get 'search', :on => :collection
    post 'search', :on => :collection
   end
+ end
  
   scope ":locale" do
    resources :books, :except => :destroy
