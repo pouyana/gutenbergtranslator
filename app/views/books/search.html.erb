@@ -4,11 +4,19 @@
       <%= link_to_function "Clear", "$('search_field').clear()" %>
   <% end %> 
 <ul>
-<% if not (@books.length > 100) %>
-<% for book in @books %>
+<!--result manamgment-->
+<% if (@books.length > 2) %>
+<%for i in 0..10 do %>
+  <%book = @books[i]%>
   <li>
     <%= book.title %>
   </li>
 <% end%>
+<%else%>
+<%for book in @books%>
+    <li>
+    <%= book.title %>
+  </li>
+<%end%>
 <%end%>
 </ul>
