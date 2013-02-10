@@ -5,13 +5,7 @@
   <% end %> 
 <ul>
 <!--result manamgment-->
-<% if (@books.length > 2) %>
-<%for i in 0..10 do %>
-  <%book = @books[i]%>
-  <li>
-    <%= book.title %>
-  </li>
-<% end%>
+<% if (@books.length == 0) %>
 <%else%>
 <%for book in @books%>
     <li>
