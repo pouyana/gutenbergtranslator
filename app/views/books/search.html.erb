@@ -1,7 +1,7 @@
-  <%= form_tag :controller => 'books', :action => 'search' do %>
+  <%= form_tag( {:controller => "books", :action => "search"}, :class=>'form-search') do %>
       <%= text_field_tag :search, params[:search], :id => 'search_field' %>
-      <%= submit_tag "Search", :name => nil %> 
-      <%= link_to_function "Clear", "$('search_field').clear()" %>
+      <%= submit_tag "Search", :name => nil, :class=>"btn" %> 
+      <%= link_to_function "Clear", "document.getElementById('search_field').value=''" %>
   <% end %> 
 <ul>
 <!--result manamgment-->
