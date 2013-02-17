@@ -3,25 +3,38 @@
       <%= text_field_tag :search, params[:search], :id => 'search_field' ,:class=>"search-query" %>
       <% button_to_function 'x', "document.getElementById('search_field').value=''" %>
     <%= submit_tag t :Search, :name => nil, :class=>"btn" %> 
+    <div>
+    <%= check_box_tag(:author) %>
+    <%= label_tag(:author, (t :Author)) %>
+    <%= check_box_tag(:title) %>
+    <%= label_tag(:title, (t :Title)) %>
+    <%= check_box_tag(:number) %>
+    <%= label_tag(:number, (t :BookNumber)) %>
+    </div>
   <% end %> 
 </center>
 
 <% if (@books.length == 0) %>
  <%else%>
-  <div class="span8">
+  <div>
    <table class="table table-condensed">
     <thead>
       <tr>
+          <th><%= t :Number  %></th>
           <th><%= t :Title   %></th>
           <th><%= t :Author  %></th>
           <th><%= t :Percent %></th>
           <th><%= t :Added   %></th>
+          <th><%= t :Language%></th>
           <th><%= t :Info    %></th>                    
       </tr>
   </thead>
   <tbody>
 <%for book in @books%>
     <tr>
+    <td>
+    <%= book.number %>
+    </td>
     <td>
     <%= book.title %>
     </td>
@@ -33,6 +46,9 @@
     </td>
     <td>
     No
+    </td>
+    <td>
+    <%= book.lang %>
     </td>
     <td>
     <%= button_to_function "info" %>

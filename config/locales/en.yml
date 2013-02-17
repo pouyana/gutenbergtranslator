@@ -30,3 +30,7 @@ en:
   remove_user: "Remove User"
   change: "Change"
   Search: "Search"
+  BookNumber: "Book Number"
+  Author: "Author"
+  Name: "Name"
+  Title: "Title"

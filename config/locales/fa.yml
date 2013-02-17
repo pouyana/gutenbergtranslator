@@ -28,6 +28,10 @@ fa:
   remove_user: "حذف کاربر"
   change: "تغییر"
   Search: "جست‌وجو"
+  BookNumber: "شماره کتاب"
+  Author: "نویسنده"
+  Name: "نام"
+  Title: "عنوان"
   date:
     abbr_day_names:
     - ی
