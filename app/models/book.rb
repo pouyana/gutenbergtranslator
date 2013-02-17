@@ -1,19 +1,10 @@
 class Book < ActiveRecord::Base
   attr_accessible :author, :downloads, :lang, :number, :released_date, :size, :title
-#the search function empty when search result is not set
-
+#filter will be implimented to allow multiple options in search
 def self.filter(search)
-if search
   
-
-
-
-
-
-
 end
-end
-
+#the search only works with on parameter
 def self.search(search)
   if search
    if search[:number]
