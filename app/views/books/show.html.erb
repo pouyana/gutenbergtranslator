@@ -5,4 +5,8 @@
 <h4>
 by <%=book.author%>
 </h4>
-<%=link_to "Gutenberg" , book.gutenberg, :class=>"label label-inverse" %>
+<%=link_to (t :Gutenberg) , book.gutenberg, :class=>"label label-inverse" %>
+<% if not wikipedia(locale,book).empty? %>
+<%=link_to (t :Wikipedia), wikipedia(locale,book), :class=>"label label-inverse"%>
+<%end%>
+

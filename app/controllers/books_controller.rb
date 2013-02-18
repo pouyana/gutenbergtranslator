@@ -1,4 +1,5 @@
 class BooksController < ApplicationController
+  helper BooksHelper
   def index
    redirect_to :action => "search"
   end

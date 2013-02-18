@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+helper :all
 #this part is taken from ror i18l manual here:
 #http://guides.rubyonrails.org/i18n.html
 #and http://ruby-auf-schienen.de/3.2/i18n_mehrsprachige_rails_applikation.html
