@@ -1,0 +1,8 @@
+<% book = @book%>
+<h2>
+<%= book.title %>
+</h2>
+<h4>
+by <%=book.author%>
+</h4>
+<%=link_to "Gutenberg" , book.gutenberg, :class=>"label label-inverse" %>
