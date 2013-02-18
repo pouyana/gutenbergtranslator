@@ -45,13 +45,16 @@
     Percent Place Holder
     </td>
     <td>
-    No
+    <span class="label label-important">no</span>
     </td>
     <td>
     <%= book.lang %>
     </td>
     <td>
-    <%= button_to_function "info" %>
+    <div class="btn-group">
+    <%= link_to "Info", {:action => "show", :id => book.id} ,:class=>"btn btn-primary",:method=>:get %>
+    <%= link_to "Add", {:action => "show", :id => book.id} ,:class=>"btn btn-success",:method=>:get %>
+   </div>
    </td>
 <%end%>
  </tbody>
