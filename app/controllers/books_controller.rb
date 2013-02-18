@@ -7,7 +7,7 @@ class BooksController < ApplicationController
    redirect_to :action => "index"
   end
   def show
-   @books = Book.find(params[:id])
+   @book = Book.find(params[:id])
   end
   def search
    @books = Book.search(params)
