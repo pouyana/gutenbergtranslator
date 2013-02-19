@@ -9,4 +9,7 @@ by <%=book.author%>
 <% if not wikipedia(locale,book).empty? %>
 <%=link_to (t :Wikipedia), wikipedia(locale,book), :class=>"label label-inverse"%>
 <%end%>
+<%res = amazon(book)%>
+<%= p res %>
+  
 

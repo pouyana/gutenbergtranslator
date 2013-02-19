@@ -3,6 +3,7 @@ module BooksHelper
 require 'wikipedia'
 require 'json'
 
+
 #get the wikipedia links
 def wikipedia(locale,book)
  result = []
@@ -22,4 +23,15 @@ def wikipedia(locale,book)
  return result
 end
 
+
+#get amazon details
+require 'amazon/ecs'
+def amazon(book)
+Amazon::Ecs.options = {
+  :associate_tag => 'gitipaycom-21',
+  :AWS_access_key_id => "AKIAICIBDOFLRCULNF6A",       
+  :AWS_secret_key => "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"}
+res = Amazon::Ecs.item_search('ruby', {:response_group => 'Medium', :sort => 'salesrank'})
+return res.total_results
+end
 end
