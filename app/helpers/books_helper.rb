@@ -30,6 +30,7 @@ def wikidata(locale,book)
  id = result.keys
  langCounter = 0
  wikidata = Hash.new
+ wikidata["hasarticle"]= false
  result["#{id[0]}"].each {|keys|
  if  keys[0]=="title"
      wikidata["title"]   = keys[1]
@@ -37,6 +38,7 @@ def wikidata(locale,book)
       keys[1].each{ |sites|
         langCounter = langCounter+1
         if sites[0] == wiki
+            wikidata["hasarticle"]= true
             wikidata["wikiweb"] = URI.encode(baseWiki+sites[1]["title"])
         end
       }
