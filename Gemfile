@@ -5,6 +5,7 @@ group :development, :test do
   gem 'sqlite3'
   gem 'thin'
   gem 'annotate'
+  gem 'better_errors'
 end
 group :production do
   gem 'pg'
@@ -15,6 +16,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
 end
+gem 'httparty'
 gem 'json'
 gem 'amazon-ecs'
 gem 'wikipedia-client'

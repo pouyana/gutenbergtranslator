@@ -36,3 +36,5 @@ en:
   Title: "Title"
   Wikipedia: "Wikipedia"
   Gutenberg: "Gutenberg"
+  this_book: "This book has "
+  has_article: " articles in Wikipedia"

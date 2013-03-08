@@ -6,7 +6,12 @@
 by <%=book.author%>
 </h4>
 <%=link_to (t :Gutenberg) , book.gutenberg, :class=>"label label-inverse" %>
-<% if not wikipedia(locale,book).empty? %>
-<%=link_to (t :Wikipedia), wikipedia(locale,book), :class=>"label label-inverse"%>
+<% if not wikidata(locale,book).empty? %>
+<%wiki=wikidata(locale,book)%>
+<%=link_to (t :Wikipedia), wiki["wikiweb"], :class=>"label label-inverse"%>
+<br/>
+<%= (t :this_book)%>
+<%= wiki["counter"]%>
+<%= t :has_article %>
 <%end%>
 
