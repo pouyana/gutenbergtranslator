@@ -38,3 +38,5 @@ en:
   Gutenberg: "Gutenberg"
   this_book: "This book has "
   has_article: " articles in Wikipedia"
+  NotFound: "Not Found, "
+  NotFoundDesc: "%{s} is not found here."

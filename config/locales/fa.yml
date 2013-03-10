@@ -36,6 +36,8 @@ fa:
   Gutenberg: "گوتنبرگ"
   this_book: "این کتاب دارای"
   has_article: "مقاله در ویکی‌پدیا می‌باشد"
+  NotFound: "پیدا نشد، "
+  NotFoundDesc: "%{s} در اینجا یافت نشد."
   date:
     abbr_day_names:
     - ی

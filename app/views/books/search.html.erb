@@ -15,6 +15,12 @@
 </center>
 
 <% if (@books.length == 0) %>
+ <%if not(params[:search]==nil) %>
+ <div class="alert">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong><%=t :NotFound%></strong><%=t 'NotFoundDesc', :s=>params[:search] %>
+</div>
+  <%end%>
  <%else%>
   <div>
    <table class="table table-condensed">
