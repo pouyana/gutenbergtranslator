@@ -13,6 +13,10 @@ by <%=book.author%>
 <%= (t :this_book)%>
 <%= wiki["counter"]%>
 <%= t :has_article %>
-<%end%>
-  
+<% end%>
+<br/>
+<span class="label label-inverse">Statistics</span>
+<br/>
+<% list = addParagraph(book.number)%>
+Paragraphs=<%= list.length %>
 

@@ -1,9 +1,7 @@
 class Book < ActiveRecord::Base
-require 'wikipedia'
-require 'json'
 
   attr_accessible :author, :downloads, :lang, :number, :released_date, :size, :title
-
+ has_many :paragraphs
 #filter will be implimented to allow multiple options in search
 def self.filter(search)
   

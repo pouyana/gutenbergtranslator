@@ -8,7 +8,6 @@ class CreateBooks < ActiveRecord::Migration
       t.string :lang
       t.integer :downloads
       t.integer :size
-
       t.timestamps
     end
   end
