@@ -1,4 +1,4 @@
-gutenbergtranslator
+gutenbergtranslator [![Code Climate](https://codeclimate.com/github/pouyana/gutenbergtranslator.png)](https://codeclimate.com/github/pouyana/gutenbergtranslator)
 ===================
 
 This project is meant to create website to give chance to the user to translate texts from gutenberg Project.
