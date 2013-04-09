@@ -11,8 +11,8 @@ require 'httparty'
 #I just mocked curl to get the script work, the wikidata need to know
 #your User-Agent.
 #we search for the book in wikidata, in it is own language, mainly written.
-def wikidata(locale,book)
 
+def wikidataParser(locale,book)
  title = book.title
  lang = book.lang
  baseUrl = "https://wikidata.org/w/api.php?action=wbgetentities&sites=#{lang}wiki"
@@ -23,8 +23,12 @@ def wikidata(locale,book)
  wikidata = HTTParty.get(baseTitleUrl, :headers=>{"User-Agent"=>"curl/7.9.8 (i686-pc-linux-gnu) libcurl 7.9.8 (OpenSSL 0.9.6b) (ipv6 enabled)"})
  page = wikidata.body
  parsedPage = JSON.parse(page)
+ return parsedPage
+end
+
+def wikidata(locale,book)
+ parsedPage= wikidataParser(locale,book)
  if parsedPage["entities"].has_key?("-1") and parsedPage["entities"]["success"]="1"
- #do nothing
  else
  result = parsedPage["entities"]
  id = result.keys
