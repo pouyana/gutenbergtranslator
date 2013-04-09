@@ -1,0 +1,80 @@
+module BooksHelper
+
+require 'json'
+require 'httparty'
+
+<<<<<<< HEAD
+#wikidata links
+#I use manily wikidata as a dictionary in this time, but mabey
+#you can get more use of it. httparty our httplib here.
+#the User-Agent example taken from
+#https://github.com/tibbon/httparty/commit/d88eeff
+#I just mocked curl to get the script work, the wikidata need to know
+#your User-Agent.
+#we search for the book in wikidata, in it is own language, mainly written.
+def wikidata(locale,book)
+
+ title = book.title
+ lang = book.lang
+ baseUrl = "https://wikidata.org/w/api.php?action=wbgetentities&sites=#{lang}wiki"
+ wiki = "#{locale}wiki"
+ baseWiki ="https://#{locale}.wikipedia.org/wiki/"
+ baseTitleUrl = baseUrl+"&titles="+title.to_s+"&format=json"
+ baseTitleUrl = URI.encode(baseTitleUrl)
+ wikidata = HTTParty.get(baseTitleUrl, :headers=>{"User-Agent"=>"curl/7.9.8 (i686-pc-linux-gnu) libcurl 7.9.8 (OpenSSL 0.9.6b) (ipv6 enabled)"})
+ page = wikidata.body
+ parsedPage = JSON.parse(page)
+ if parsedPage["entities"].has_key?("-1") and parsedPage["entities"]["success"]="1"
+ #do nothing
+=======
+
+#get the wikipedia links
+def wikipedia(locale,book)
+ result = []
+ base = "#{locale}.wikipedia.org"
+ Wikipedia.Configure {
+  domain base
+  path   'w/api.php'
+ }
+ page =  Wikipedia.find(book.title, :prop=>"info")
+ parsed_page = JSON.parse(page.json)
+# #check if it exists.
+ if parsed_page["query"]["pages"].has_key?("-1")
+>>>>>>> 6aff8fc7a22f1dea3f5b5a1c51e765a5fbf48eeb
+ else
+ result = parsedPage["entities"]
+ id = result.keys
+ langCounter = 0
+ wikidata = Hash.new
+ result["#{id[0]}"].each {|keys|
+ if  keys[0]=="title"
+     wikidata["title"]   = keys[1]
+ elsif keys[0] == "sitelinks"
+      keys[1].each{ |sites|
+        langCounter = langCounter+1
+        if sites[0] == wiki
+            wikidata["wikiweb"] = URI.encode(baseWiki+sites[1]["title"])
+        end
+      }
+    wikidata["counter"] = langCounter
+ end  
+   }
+end
+ return wikidata
+end
+<<<<<<< HEAD
+=======
+
+
+#get amazon details
+require 'amazon/ecs'
+def amazon(book)
+Amazon::Ecs.options = {
+  :associate_tag => 'gitipaycom-21',
+  :AWS_access_key_id => "AKIAICIBDOFLRCULNF6A",       
+  :AWS_secret_key => "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"}
+res = Amazon::Ecs.item_search('ruby', {:response_group => 'Medium', :sort => 'salesrank'})
+return res.total_results
+end
+>>>>>>> 6aff8fc7a22f1dea3f5b5a1c51e765a5fbf48eeb
+end
