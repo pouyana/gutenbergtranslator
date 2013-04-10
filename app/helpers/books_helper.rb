@@ -13,53 +13,61 @@ require 'httparty'
 #we search for the book in wikidata, in it is own language, mainly written.
 
 def wikidataParser(locale,book)
- results=Hash.new
  title = book.title
  lang = book.lang
  baseUrl = "https://wikidata.org/w/api.php?action=wbgetentities&sites=#{lang}wiki"
- baseWiki ="https://#{locale}.wikipedia.org/wiki/"
  baseTitleUrl = baseUrl+"&titles="+title.to_s+"&format=json"
  baseTitleUrl = URI.encode(baseTitleUrl)
  wikidata = HTTParty.get(baseTitleUrl, :headers=>{"User-Agent"=>"curl/7.9.8 (i686-pc-linux-gnu) libcurl 7.9.8 (OpenSSL 0.9.6b) (ipv6 enabled)"})
  page = wikidata.body
  parsedPage = JSON.parse(page)
- results["parsedPage"] = parsedPage
- results["baseWiki"] = baseWiki
- return results
+ return parsedPage
 end
 
-def wikidataResolver(parsedPage,
+def wikidataGetBaseWiki(locale)
+ wiki=Hash.new
+ wiki["Base"]= "#{locale}wiki"
+ wiki["Url"] ="https://#{locale}.wikipedia.org/wiki/"
+ return wiki
+end
 
-def wikidata(locale,book)
- parsedPage = wikidataParser(locale,book)["parsedPage"]
- baseWiki = wikidataParser(locale,book)["baseWiki"]
- wiki = "#{locale}wiki"
+def wikidataMiner(parsedPage,wiki,baseWiki)
+ 
+ wikidata = Hash.new
  if parsedPage["entities"].has_key?("-1") and parsedPage["entities"]["success"]="1"
  else
- entities = parsedPage["entities"]
- keys = result.keys
- langCounter = 0
- wikidata = Hash.new
- wikidata["hasarticle"]= false
- entities["#{keys[0]}"].each {|key|
- if  key[0]=="title"
-     wikidata["title"]   = key[1]
- elsif keys[0] == "sitelinks"
-      key[1].each{ |sites|
-        langCounter = langCounter+1
-        if sites[0] == wiki
-            wikidata["hasarticle"]= true
-            wikidata["wikiweb"] = URI.encode(baseWiki+sites[1]["title"])
-        end
-      }
-    wikidata["counter"] = langCounter
- end  
-   }
+  entities = parsedPage["entities"]
+  id = entities.keys
+  counter = 0
+  wikidata["hasarticle"]= false
+  entities["#{id[0]}"].each do |keys|
+  if keys[0]=="title"
+    wikidata["title"] = keys[1]
+  elsif keys[0] == "sitelinks"
+   keys[1].each do |sites|
+   counter = counter+1
+   if sites[0] == wiki
+    wikidata["hasarticle"]= true
+    wikidata["wikiweb"] = URI.encode(baseWiki+sites[1]["title"])
+   end
+  end
+ end
+  end
+    wikidata["counter"] = counter
 end
  return wikidata
 end
- 
- def urlCombinator(options,id)
+
+def wikidata(locale,book)
+ newWiki=wikidataGetBaseWiki(locale)
+ parsedPage = wikidataParser(locale,book)
+ wiki = newWiki["Base"]
+ baseWiki =newWiki["Url"]
+ wikidata=wikidataMiner(parsedPage,wiki,baseWiki)
+ return wikidata
+end
+
+def urlCombinator(options,id)
     baseUrl="http://www.gutenberg.org/files/"+id.to_s+"/"
     combinedUrl =""
     case options
@@ -72,9 +80,9 @@ end
     end
     combinedUrl=URI.encode(combinedUrl)
     return combinedUrl
- end
+end
 
- def textToParagrap(textFile)
+def textToParagrap(textFile)
   paragString=""
   paragraphs = Array.new
   textFile.each_line do |line|
@@ -86,13 +94,13 @@ end
    end
   end
   return paragraphs
- end
+end
 
- def addParagraph(bookid)
+def addParagraph(bookid)
     combinedUrl = urlCombinator("",bookid)
     textFile=HTTParty.get(combinedUrl)
     if (textFile.code==200)
-       paragraphs=textToParagrap(textFile) 
+       paragraphs=textToParagrap(textFile)
     elsif (textFile.code==404)
       combinedUrl = urlCombinator(0,bookid)
       textFile=HTTParty.get(combinedUrl)
@@ -103,7 +111,7 @@ end
        textFile=HTTParty.get(combinedUrl)
        paragraphs=textToParagrap(textFile)
        end
-    end 
+    end
   return paragraphs
  end
 end
