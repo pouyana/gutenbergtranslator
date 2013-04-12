@@ -32,7 +32,6 @@ def wikidataGetBaseWiki(locale)
 end
 
 def wikidataMiner(parsedPage,wiki,baseWiki)
- 
  wikidata = Hash.new
  if parsedPage["entities"].has_key?("-1") and parsedPage["entities"]["success"]="1"
  else
@@ -96,22 +95,65 @@ def textToParagrap(textFile)
   return paragraphs
 end
 
+def booksave(bookid,text,url)
+ textFile = text
+#random name generator for more privacy and also bandwidth saving.
+#the files could be acciable to internet as they are free (Free as in GNU)
+#the code is taken from stackoverflow page, it is in CC-BY-SA 2.
+#source: http://stackoverflow.com/questions/88311/how-best-to-generate-a-random-string-in-ruby
+ o =  [('a'..'z'),('A'..'Z')].map{|i| i.to_a}.flatten
+ filename = (0...20).map{ o[rand(o.length)] }.join 
+ if (not(Path.where(:book_id=>bookid).exists?))
+  dir="public/txt"
+  File.open(File.join(dir,filename),"wb") do |tosave|
+   tosave.write(textFile)
+  end
+  path = Path.new(:book_id=>bookid,:txt=>filename,:url=>url)
+  path.save
+ end
+end
+
+
+def bookresolver(bookid)
+ result = false
+ text = false
+ combination=["",0,8]
+ combination.each do |comb|
+  if(not(result))
+   combinedUrl = urlCombinator(comb,bookid)
+   textFile=HTTParty.get(combinedUrl)
+   case textFile.code
+    when 200
+    result = true
+    text = textFile
+    booksave(bookid,text,combinedUrl)
+    when 404
+    result = false
+   end
+  end
+ end
+ return text
+end
+
+#the where method, gives an array object, so you have to pop the first result out
+def booklocal(bookid)
+  path = Path.where(:book_id=>bookid)
+  if (path.exists?)
+    dir = "public/txt"
+    file = File.open(File.join(dir,path.pop.txt),"r")
+    text = file.read
+    file.close
+  else
+  text = bookresolver(bookid)
+  end
+ return text
+end
+
 def addParagraph(bookid)
-    combinedUrl = urlCombinator("",bookid)
-    textFile=HTTParty.get(combinedUrl)
-    if (textFile.code==200)
-       paragraphs=textToParagrap(textFile)
-    elsif (textFile.code==404)
-      combinedUrl = urlCombinator(0,bookid)
-      textFile=HTTParty.get(combinedUrl)
-      if (textFile.code==200)
-       paragraphs=textToParagrap(textFile)
-      else
-       combinedUrl = urlCombinator(8,bookid)
-       textFile=HTTParty.get(combinedUrl)
-       paragraphs=textToParagrap(textFile)
-       end
+    text = booklocal(bookid)
+    if (text) 
+       paragraphs=textToParagrap(text)
     end
   return paragraphs
- end
+end
 end

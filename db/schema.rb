@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130317181515) do
+ActiveRecord::Schema.define(:version => 20130412174041) do
 
   create_table "books", :force => true do |t|
     t.integer  "number"
@@ -21,8 +21,9 @@ ActiveRecord::Schema.define(:version => 20130317181515) do
     t.string   "lang"
     t.integer  "downloads"
     t.integer  "size"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+    t.integer  "path_id",       :default => 0
   end
 
   create_table "paragraphs", :force => true do |t|
@@ -33,6 +34,15 @@ ActiveRecord::Schema.define(:version => 20130317181515) do
   end
 
   add_index "paragraphs", ["book_id"], :name => "index_paragraphs_on_book_id"
+
+  create_table "paths", :force => true do |t|
+    t.string   "pdf"
+    t.integer  "book_id"
+    t.string   "url"
+    t.string   "txt"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "roles", :force => true do |t|
     t.string   "name"

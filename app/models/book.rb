@@ -1,7 +1,8 @@
 class Book < ActiveRecord::Base
 
-  attr_accessible :author, :downloads, :lang, :number, :released_date, :size, :title
+ attr_accessible :author, :downloads, :lang, :number, :released_date, :size, :title
  has_many :paragraphs
+ has_one :paths
 #filter will be implimented to allow multiple options in search
 def self.filter(search)
   
