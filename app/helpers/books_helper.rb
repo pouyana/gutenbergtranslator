@@ -31,29 +31,33 @@ def wikidataGetBaseWiki(locale)
  return wiki
 end
 
+def wikicounter(keys,wikidata,baseWiki,wiki)
+counter = 0
+keys.each do |wikis|
+  counter = counter+1
+  if wikis[0] == wiki
+    wikidata["hasarticle"]=true
+    wikidata["wikiweb"] = URI.encode(baseWiki+wikis[1]["title"])
+  end
+ end
+ wikidata["counter"]=counter
+end
+
 def wikidataMiner(parsedPage,wiki,baseWiki)
  wikidata = Hash.new
  if parsedPage["entities"].has_key?("-1") and parsedPage["entities"]["success"]="1"
  else
   entities = parsedPage["entities"]
   id = entities.keys
-  counter = 0
   wikidata["hasarticle"]= false
   entities["#{id[0]}"].each do |keys|
   if keys[0]=="title"
     wikidata["title"] = keys[1]
   elsif keys[0] == "sitelinks"
-   keys[1].each do |sites|
-   counter = counter+1
-   if sites[0] == wiki
-    wikidata["hasarticle"]= true
-    wikidata["wikiweb"] = URI.encode(baseWiki+sites[1]["title"])
-   end
+  wikicounter(keys[1],wikidata,baseWiki,wiki)
   end
- end
   end
-    wikidata["counter"] = counter
-end
+  end
  return wikidata
 end
 
@@ -81,7 +85,7 @@ def urlCombinator(options,id)
     return combinedUrl
 end
 
-def textToParagrap(textFile)
+def textToParagraph(textFile)
   paragString=""
   paragraphs = Array.new
   textFile.each_line do |line|
@@ -150,9 +154,10 @@ def booklocal(bookid)
 end
 
 def addParagraph(bookid)
+    paragraphs=0
     text = booklocal(bookid)
     if (text) 
-       paragraphs=textToParagrap(text)
+       paragraphs=textToParagraph(text)
     end
   return paragraphs
 end
