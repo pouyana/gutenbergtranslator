@@ -116,6 +116,7 @@ def self.booksave(bookid,text,url)
   end
   path = Path.new(:book_id=>bookid,:txt=>filename,:url=>url)
   path.save
+  Book.update(bookid,:path_id=>path.id)
  end
 end
 
@@ -123,10 +124,11 @@ end
 def self.bookresolver(bookid)
  result = false
  text = false
+ book=Book.find(bookid)
  combination=["",0,8]
  combination.each do |comb|
   if(not(result))
-   combinedUrl = self.urlCombinator(comb,bookid)
+   combinedUrl = self.urlCombinator(comb,book.number)
    textFile=HTTParty.get(combinedUrl)
    case textFile.code
     when 200
@@ -165,6 +167,6 @@ def self.addParagraph(bookid)
        Book.update(bookid, :paragraph_count => counter)
       end
     end
- return book.paragraph_count
+ #return book.paragraph_count
 end
 end

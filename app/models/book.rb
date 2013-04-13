@@ -1,6 +1,6 @@
 class Book < ActiveRecord::Base
 
- attr_accessible :author, :downloads, :lang, :number, :released_date, :size, :title, :paragraph_count
+ attr_accessible :author, :downloads, :lang, :number, :released_date, :size, :title, :paragraph_count, :path_id
  has_many :paragraphs
  has_one :paths
 #filter will be implimented to allow multiple options in search

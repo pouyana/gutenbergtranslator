@@ -32,9 +32,11 @@ by <%=book.author%>
     <%= wiki["counter"]%>
     <% end%>
     </td>
+    <% if book.paragraph_count!=-1%>
     <td>
     <%= book.paragraph_count %>
     </td>
+    <%end%>
    </tr>
   </table>
  </div>
