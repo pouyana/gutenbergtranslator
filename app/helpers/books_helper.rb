@@ -70,7 +70,7 @@ def wikidata(locale,book)
  return wikidata
 end
 
-def urlCombinator(options,id)
+def self.urlCombinator(options,id)
     baseUrl="http://www.gutenberg.org/files/"+id.to_s+"/"
     combinedUrl =""
     case options
@@ -85,21 +85,23 @@ def urlCombinator(options,id)
     return combinedUrl
 end
 
-def textToParagraph(textFile)
+def self.textToParagraph(textFile,bookid)
   paragString=""
-  paragraphs = Array.new
+  c=0
   textFile.each_line do |line|
    if(/\n/.match(line.to_s) and line.length>2)
     paragString=paragString+line.to_s
    else
-    paragraphs.push(paragString)
+    tmp_paragraph= Paragraph.new(:book_id=>bookid,:body=>paragString)
+    tmp_paragraph.save
+    c=c+1
     paragString=""
    end
   end
-  return paragraphs
+return c
 end
 
-def booksave(bookid,text,url)
+def self.booksave(bookid,text,url)
  textFile = text
 #random name generator for more privacy and also bandwidth saving.
 #the files could be acciable to internet as they are free (Free as in GNU)
@@ -118,19 +120,19 @@ def booksave(bookid,text,url)
 end
 
 
-def bookresolver(bookid)
+def self.bookresolver(bookid)
  result = false
  text = false
  combination=["",0,8]
  combination.each do |comb|
   if(not(result))
-   combinedUrl = urlCombinator(comb,bookid)
+   combinedUrl = self.urlCombinator(comb,bookid)
    textFile=HTTParty.get(combinedUrl)
    case textFile.code
     when 200
     result = true
     text = textFile
-    booksave(bookid,text,combinedUrl)
+    self.booksave(bookid,text,combinedUrl)
     when 404
     result = false
    end
@@ -140,7 +142,7 @@ def bookresolver(bookid)
 end
 
 #the where method, gives an array object, so you have to pop the first result out
-def booklocal(bookid)
+def self.booklocal(bookid)
   path = Path.where(:book_id=>bookid)
   if (path.exists?)
     dir = "public/txt"
@@ -148,17 +150,21 @@ def booklocal(bookid)
     text = file.read
     file.close
   else
-  text = bookresolver(bookid)
+  text = self.bookresolver(bookid)
   end
  return text
 end
 
-def addParagraph(bookid)
+def self.addParagraph(bookid)
     paragraphs=0
-    text = booklocal(bookid)
-    if (text) 
-       paragraphs=textToParagraph(text)
+    text = self.booklocal(bookid)
+    book = Book.find(bookid)
+    if(book.paragraph_count==-1)
+      if (text) 
+       counter = self.textToParagraph(text,bookid)
+       Book.update(bookid, :paragraph_count => counter)
+      end
     end
-  return paragraphs
+ return book.paragraph_count
 end
 end

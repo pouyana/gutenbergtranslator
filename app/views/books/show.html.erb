@@ -5,18 +5,37 @@
 <h4>
 by <%=book.author%>
 </h4>
-<%=link_to (t :Gutenberg) , book.gutenberg, :class=>"label label-inverse" %>
-<% if wikidata(locale,book)["hasarticle"] %>
-<%wiki=wikidata(locale,book)%>
-<%=link_to (t :Wikipedia), wiki["wikiweb"], :class=>"label label-inverse"%>
-<br/>
-<%= (t :this_book)%>
-<%= wiki["counter"]%>
-<%= t :has_article %>
-<% end%>
-<br/>
-<span class="label label-inverse">Statistics</span>
-<br/>
-<% list = addParagraph(book.number)%>
-Paragraphs=<%= list.length %>
-
+<div class="row" style="margin-bottom:10px">
+ <div class="span3">
+  <%=link_to (t :Gutenberg) , book.gutenberg, :class=>"label label-inverse" %>
+  <% if wikidata(locale,book)["hasarticle"] %>
+  <%wiki=wikidata(locale,book)%>
+  <%=link_to (t :Wikipedia), wiki["wikiweb"], :class=>"label label-inverse"%>
+  <%end%>
+ </div>
+</div>
+<div class="row-fluid">
+ <div class="span2 offset10">
+  <h5>Statistics</h5>
+  <table class="table">
+   <tr>
+    <th>
+    Articles
+    </th>
+    <th>
+    Paragraphs
+    </th>
+   </tr>
+   <tr>
+    <td>
+    <% if wikidata(locale,book)["hasarticle"] %>
+    <%= wiki["counter"]%>
+    <% end%>
+    </td>
+    <td>
+    <%= book.paragraph_count %>
+    </td>
+   </tr>
+  </table>
+ </div>
+</div>

@@ -4,6 +4,8 @@ Gutenbergtranslator::Application.routes.draw do
   resources :books do
    get 'search', :on => :collection
    post 'search', :on => :collection
+   get 'add' , :on => :collection
+   post 'add', :on => :collection
   end
  end
  

@@ -51,7 +51,11 @@
     Percent Place Holder
     </td>
     <td>
+    <%if(book.paragraph_count ==-1)%>
     <span class="label label-important">no</span>
+    <%else%>
+    <span class="label label-success">yes</span>
+    <%end%>
     </td>
     <td>
     <%= book.lang %>
@@ -59,7 +63,9 @@
     <td>
     <div class="btn-group">
     <%= link_to "Info", {:action => "show", :id => book.id} ,:class=>"btn btn-primary",:method=>:get %>
-    <%= link_to "Add", {:action => "show", :id => book.id} ,:class=>"btn btn-success",:method=>:get %>
+    <%if(book.paragraph_count ==-1)%>
+    <%= link_to "Add", {:action => "add", :id => book.id} ,:class=>"btn btn-success",:method=>:get %>
+    <%end%>
    </div>
    </td>
 <%end%>
