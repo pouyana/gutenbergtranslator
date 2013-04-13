@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130413123607) do
+ActiveRecord::Schema.define(:version => 20130413133830) do
 
   create_table "books", :force => true do |t|
     t.integer  "number"
@@ -25,6 +25,16 @@ ActiveRecord::Schema.define(:version => 20130413123607) do
     t.datetime "updated_at",                      :null => false
     t.integer  "path_id",         :default => 0
     t.integer  "paragraph_count", :default => -1
+  end
+
+  create_table "p_translates", :force => true do |t|
+    t.string   "body"
+    t.integer  "user_id"
+    t.integer  "status"
+    t.integer  "paragraph_id"
+    t.boolean  "accepted"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "paragraphs", :force => true do |t|
@@ -82,5 +92,24 @@ ActiveRecord::Schema.define(:version => 20130413123607) do
   end
 
   add_index "users_roles", ["user_id", "role_id"], :name => "index_users_roles_on_user_id_and_role_id"
+
+  create_table "w_translates", :force => true do |t|
+    t.string   "body"
+    t.integer  "user_id"
+    t.integer  "status"
+    t.integer  "word_id"
+    t.boolean  "accepted"
+    t.string   "tag"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "words", :force => true do |t|
+    t.string   "body"
+    t.integer  "translation_count"
+    t.integer  "paragraph_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
 
 end
