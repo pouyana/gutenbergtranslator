@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130413133830) do
+ActiveRecord::Schema.define(:version => 20130414200902) do
 
   create_table "books", :force => true do |t|
     t.integer  "number"
@@ -35,6 +35,8 @@ ActiveRecord::Schema.define(:version => 20130413133830) do
     t.boolean  "accepted"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.string   "from_locale"
+    t.string   "to_locale"
   end
 
   create_table "paragraphs", :force => true do |t|
@@ -100,8 +102,10 @@ ActiveRecord::Schema.define(:version => 20130413133830) do
     t.integer  "word_id"
     t.boolean  "accepted"
     t.string   "tag"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "from_locale"
+    t.string   "to_locale"
   end
 
   create_table "words", :force => true do |t|

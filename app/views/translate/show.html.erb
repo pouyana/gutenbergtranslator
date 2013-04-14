@@ -1,0 +1,37 @@
+<script type="text/javascript">
+//some test if the jquery test works.
+$(document).ready(function()
+  {
+    $("#paragraph").change(function()
+      {
+        $.ajax({
+        url:"getParagraphs.json",
+        type: "POST",
+        data: {id:<%=params[:id]%>, limit:10},
+        dataType:"json"
+        }).done(function(data) {
+        var htmlpart=""
+        for(var i=0;i<data.length;i++) {
+        htmlpart = htmlpart + "<div class='span8'>"+data[i].paragraph.body+"</div>";
+        }
+       $("#changed").html(htmlpart);
+      });
+    });
+  });
+
+</script>
+
+<div class="row">
+  <div class="span3 offset2">
+    <select id="paragraph">
+      <option>Select</option>
+      <option value="2">Translated</option>
+      <option value="0">Not Translated</option>
+      <option value="1">All Paragraphs </option>
+    </select>
+  </div>
+</div>
+<div class="row">
+  <div id="changed">
+</div>
+</div>

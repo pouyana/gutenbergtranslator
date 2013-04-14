@@ -106,11 +106,14 @@ GEM
     multi_json (1.7.2)
     multi_xml (0.5.3)
     nokogiri (1.5.9)
+    oj (2.0.10)
     orm_adapter (0.4.0)
     pg (0.15.1)
     polyglot (0.3.3)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
+    rabl (0.8.3)
+      activesupport (>= 2.3.14)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -202,8 +205,10 @@ DEPENDENCIES
   json
   launchy (>= 2.1.2)
   nokogiri
+  oj
   pg
   quiet_assets (>= 1.0.1)
+  rabl
   rails (= 3.2.11)
   rdf
   rolify (>= 3.2.0)

@@ -19,6 +19,8 @@ end
 #gem "activerecord-tableless", "~> 1.0"
 gem 'httparty'
 gem 'json'
+gem 'rabl'
+gem 'oj'
 #gem 'amazon-ecs'
 #gem 'wikipedia-client'
 gem 'jquery-rails'

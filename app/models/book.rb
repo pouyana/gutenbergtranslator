@@ -97,14 +97,19 @@ class Book < ActiveRecord::Base
     combination.each do |comb|
       if(not(result))
         combinedUrl = self.urlCombinator(comb,book.number)
-        textFile=HTTParty.get(combinedUrl)
-        case textFile.code
-        when 200
-          result = true
-          text = textFile
-          self.booksave(bookid,text,combinedUrl)
-        when 404
-          result = false
+        begin
+          textFile=HTTParty.get(combinedUrl)
+          case textFile.code
+          when 200
+            result = true
+            text = textFile
+            self.booksave(bookid,text,combinedUrl)
+          when 404
+            result = false
+          end
+        rescue =>e
+          puts "Gutenberg not acceable please check your Internet connection"
+          text=false
         end
       end
     end

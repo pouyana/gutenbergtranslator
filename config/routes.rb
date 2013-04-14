@@ -1,5 +1,4 @@
 Gutenbergtranslator::Application.routes.draw do
-  #books
   scope ":locale" do
   resources :books do
    get 'search', :on => :collection
@@ -7,7 +6,13 @@ Gutenbergtranslator::Application.routes.draw do
    get 'add' , :on => :collection
    post 'add', :on => :collection
   end
- end
+  end
+  scope ":locale" do
+  resources :translate do
+   get 'getParagraphs', :on => :collection
+   post 'getParagraphs', :on => :collection
+  end
+  end
  #add new routes under locale, if it is not REST add it up ^ if not down >
   scope ":locale" do
    resources :books, :except => :destroy
