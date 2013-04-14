@@ -8,18 +8,19 @@ Gutenbergtranslator::Application.routes.draw do
    post 'add', :on => :collection
   end
  end
- 
+ #add new routes under locale, if it is not REST add it up ^ if not down >
   scope ":locale" do
    resources :books, :except => :destroy
+   resources :translate, :except=> :destroy
   end
   #static pages (without any get action)
-  get "static_pages/home"
-  get "static_pages/help"
+  get "static/home"
+  get "static/help"
   
   #pages that are not connected to and model. are added to the locale 
   match '/:locale' => "home#index"
-  match '/:locale/static_pages/home' => "static_pages#home"
-  match '/:locale/static_pages/help' => "static_pages#home"
+  match '/:locale/static/home' => "static_pages#home"
+  match '/:locale/static/help' => "static_pages#help"
   authenticated :user do
    root :to => 'home#index'
   end

@@ -14,7 +14,7 @@ class BooksController < ApplicationController
    @books = Book.search(params)
   end
   def add
-   BooksHelper.addParagraph(params[:id])
+   Book.addParagraph(params[:id])
    redirect_to :action => "show", :id=>params[:id]
   end
 end

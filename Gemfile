@@ -16,10 +16,11 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
 end
+#gem "activerecord-tableless", "~> 1.0"
 gem 'httparty'
 gem 'json'
-gem 'amazon-ecs'
-gem 'wikipedia-client'
+#gem 'amazon-ecs'
+#gem 'wikipedia-client'
 gem 'jquery-rails'
 gem 'rdf'
 gem 'nokogiri'
