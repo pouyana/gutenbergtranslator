@@ -8,6 +8,9 @@ class TranslateController < ApplicationController
     # but there is no need to translate them.
     # I want to pass limit also as a parameter, with default value of 10
     @paragraphs = Paragraph.where("book_id =? And body > ?",params[:id],2).limit(10)
+    @book = Book.find(params[:id])
+    #percent needs more work
+    @percent = Paragraph.getTranslatedParagraphPercent(params[:id])
   end
   
   #ajax get paragraphs caller. 
@@ -30,7 +33,6 @@ class TranslateController < ApplicationController
   def getNotTranslatedParagraphs
 
   end
-
-
+  
 end
 

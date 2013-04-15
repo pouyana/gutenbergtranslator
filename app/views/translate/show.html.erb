@@ -2,7 +2,7 @@
 //some test if the jquery test works.
 $(document).ready(function()
   {
-    $("#paragraph").change(function()
+    $("#paragraph").click(function()
       {
         $.ajax({
         url:"getParagraphs.json",
@@ -15,23 +15,48 @@ $(document).ready(function()
         htmlpart = htmlpart + "<div class='span8'>"+data[i].paragraph.body+"</div>";
         }
        $("#changed").html(htmlpart);
+       $("#paragraph").prepend("<i class=\"icon-play\"></i>  ");
+       $("#paragraph").parent().addClass("active");
       });
     });
   });
 
 </script>
+  <div class="row-fluid">
+    <div class="span9">
+      <%book = @book%>
+      <%percent = @percent %>
+      <%= book.title %>
+      by <b><%=book.author%></b>
+      Translated <%=percent%> %
+      
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">Paragraphs <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a id="paragraph" href="#">Untranslated</a></li>
+          <li><a href="#">Translated</a></li>
+          <li><a href="#">All</a></li>
+        </ul>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">Words<span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="#">Untranslated</a></li>
+          <li><a href="#">Translated</a></li>
+          <li><a href="#">All</a></li>
+        </ul>
+    </div>
+      <div class="btn-group">
+      <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">My Translations<span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="#">Words</a></li>
+          <li><a href="#">Paragraphs</a></li>
+        </ul>
+    </div>
 
-<div class="row">
-  <div class="span3 offset2">
-    <select id="paragraph">
-      <option>Select</option>
-      <option value="2">Translated</option>
-      <option value="0">Not Translated</option>
-      <option value="1">All Paragraphs </option>
-    </select>
   </div>
-</div>
-<div class="row">
-  <div id="changed">
-</div>
-</div>
+  <div class="row">
+    <div id="changed">
+    </div>
+  </div>
