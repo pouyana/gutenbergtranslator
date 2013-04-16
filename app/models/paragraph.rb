@@ -6,30 +6,53 @@ class Paragraph < ActiveRecord::Base
   
   #translation_count should be added one number up after a diffrent status of translation existed.
   #if user translation exists, then +1
-  #if reviwer translation, then +2
+  #if reviewer translation, then +2
   #if admin translation, then +3
 
-  def self.getTranslatedUserParagraphPercent(id)
-    tsize = Paragraph.where("book_id =? And body > ? And translation_count > ? ",id,2,0).count
-    psize = Paragraph.where("book_id =? And body > ?",id,2).count
-    book = Book.find(id)
-    percent = tsize/psize * 100
-    return percent
+  #Paragraph Count and Percent Methods  >>>
+  def self.getTranslatedParagraphsCount()
+    @translatedParagraphCount
+  end
+
+  def self.setTranslatedParagraphsCount(id,status)
+    @translatedParagraphCount = self.where("book_id =? And body > ? And translation_count > ? ",id,2,status).count
+  end
+
+  def self.getAllParagraphsCount()
+    @allParagraphsCount
+  end
+
+  def self.setAllParagraphsCount(id)
+    @allParagraphsCount = self.where("book_id =? And body > ?",id,2).count
+  end
+
+  def self.getTranslatedParagraphPercent(id,status)
+      self.setTranslatedParagraphsCount(id,status)
+      self.setAllParagraphsCount(id)
+      tsize = self.getTranslatedParagraphsCount()
+      psize = self.getAllParagraphsCount()
+      return tsize/psize * 100 
+  end
+
+  def self.getUserTranslatedParagraphPercent(id)
+    return self.getTranslatedParagraphPercent(id,0)
   end
 
   def self.getRevTranslatedParagraphPercent(id)
-    tsize = Paragraph.where("book_id =? And body > ? And translation_count > ? ",id,2,1).count
-    psize = Paragraph.where("book_id =? And body > ?",id,2).count
-    book = Book.find(id)
-    percent = tsize/psize * 100
-    return percent
+    return self.getTranslatedParagraphPercent(id,1)
   end
 
-  def self.getTranslatedParagraphPercent(id)
-    tsize = Paragraph.where("book_id =? And body > ? And translation_count > ? ",id,2,2).count
-    psize = Paragraph.where("book_id =? And body > ?",id,2).count
-    book = Book.find(id)
-    percent = tsize/psize * 100
-    return percent
+  def self.getAdminTranslatedParagraphPercent(id)
+    return self.getTranslatedParagraphPercent(id,2)
+  end
+  
+  #Paragraph Retriver Methods >>>
+  def self.getAllParagraphs()
+    @allParagraphs
+  end
+  
+  #offset to skip how many objects needed. everypage should have offset added by limit.
+  def self.setAllParagraphs(id,size,offset)
+    @allParagraphs = self.where("book_id =? And body > ?",id,2).limit(size).offset(offset)
   end
 end
