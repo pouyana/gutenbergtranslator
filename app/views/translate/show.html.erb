@@ -1,24 +1,37 @@
 <script type="text/javascript">
-//some test if the jquery test works.
-$(document).ready(function()
-  {
-    $("#paragraph").click(function()
-      {
-        $.ajax({
+
+function getParagraphs(ParagraphId) {
+  var ParaSharp = "#"+ParagraphId;
+  $(ParaSharp).click(function()
+    {
+      $.ajax({
         url:"getParagraphs.json",
         type: "POST",
         data: {id:<%=params[:id]%>, limit:10},
         dataType:"json"
-        }).done(function(data) {
+          }).done(function(data) {
         var htmlpart=""
         for(var i=0;i<data.length;i++) {
-        htmlpart = htmlpart + "<div class='span8'>"+data[i].paragraph.body+"</div>";
+          htmlpart = htmlpart + "<div class='span8'>"+data[i].paragraph.body+"</div>";
         }
-       $("#changed").html(htmlpart);
-       $("#paragraph").prepend("<i class=\"icon-play\"></i>  ");
-       $("#paragraph").parent().addClass("active");
+        $("#changed").html(htmlpart);
+
+        $('i[id^="paragraphs"]').parent().parent().removeClass("active");
+        $('i[id^="paragraphs"]').hide();
+      
+        $(ParaSharp).prepend("<i class=\"icon-play\" id=\"paragraphs\" ></i>  ");
+        $(ParaSharp).parent().addClass("active");
       });
     });
+}
+
+$(document).ready(function()
+  {
+    var options = new Array("PTranslated","PNotTranslated","PAll");
+    for (var i = 0; i < options.length; ++i) {
+     var ParagraphId = options[i];
+     getParagraphs(ParagraphId);
+    }
   });
 
 </script>
@@ -34,9 +47,9 @@ $(document).ready(function()
     <div class="btn-group">
       <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">Paragraphs <span class="caret"></span></button>
         <ul class="dropdown-menu">
-          <li><a id="paragraph" href="#">Untranslated</a></li>
-          <li><a href="#">Translated</a></li>
-          <li><a href="#">All</a></li>
+          <li><a id="PNotTranslated" href="#">Untranslated</a></li>
+          <li><a id="PTranslated" href="#">Translated</a></li>
+          <li><a id="PAll" href="#">All</a></li>
         </ul>
     </div>
     <div class="btn-group">
