@@ -21,12 +21,8 @@ class TranslateController < ApplicationController
       plimit = 10
     end
 #    @paragraphs = Paragraph.where("book_id =? And body > ?",params[:id],2).limit(plimit)
-    if(Paragraph.getAllParagraphs!=nil)
-      @paragraphs = Paragraph.getAllParagraphs
-    else
       Paragraph.setAllParagraphs(params[:id],plimit,10)
       @paragraphs = Paragraph.getAllParagraphs
-    end
     respond_to do |format|
       format.json
     end
