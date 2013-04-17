@@ -4,37 +4,35 @@ class TranslateController < ApplicationController
   end
   
   def show
-    # to be noticed that paragraphs of empty lines are not add, as they are nessary for the format
-    # but there is no need to translate them.
-    # I want to pass limit also as a parameter, with default value of 10
-    @paragraphs = Paragraph.where("book_id =? And body > ?",params[:id],2).limit(10)
-    @book = Book.find(params[:id])
-    #percent needs more work
-    @percent = Paragraph.getUserTranslatedParagraphPercent(params[:id])
+    @id = params[:id]
+    @book = Book.find(@id)
+    @percent = Paragraph.getUserTranslatedParagraphPercent(@id)
   end
   
   #ajax get paragraphs caller. 
   def getParagraphs
-    if params[:limit] and params[:limit].to_i < 101
-      plimit = params[:limit]
-    else
-      plimit = 10
+    @type = params[:type]
+    @plimit = params[:limit]
+    @id = params[:id]
+    @page = params[:page]
+    @offset = Paragraph.offsetCalc(@page,@plimit)
+    if (@plimit.to_i > 101) || not(@plimit.to_i > 0)
+      @plimit = 10
     end
-#    @paragraphs = Paragraph.where("book_id =? And body > ?",params[:id],2).limit(plimit)
-      Paragraph.setAllParagraphs(params[:id],plimit,10)
+    case @type
+      when "0"
+      Paragraph.setUntranslatedParagraphs(@id,@plimit,@offset)
+      @paragraphs = Paragraph.getUntranslatedParagraphs
+      when "1"
+      Paragraph.setTranslatedParagraphs(@id,@plimit,@offset)
+      @paragraphs = Paragraph.getTranslatedParagraphs
+      when "2"
+      Paragraph.setAllParagraphs(@id,@plimit,@offset)
       @paragraphs = Paragraph.getAllParagraphs
+    end
     respond_to do |format|
       format.json
     end
   end
 
-  def getTranslatedParagraphs(status)
-
-  end
-
-  def getNotTranslatedParagraphs
-
-  end
-  
 end
-

@@ -9,8 +9,18 @@ class Paragraph < ActiveRecord::Base
   #if reviewer translation, then +2
   #if admin translation, then +3
 
+  #helper methods.(just working, exceptions not handeld).
+  def self.offsetCalc(page,limit)
+    @page = page.to_i
+    @limit = limit.to_i
+    @offset = 0
+    if @page > 0
+      @offset = @page * @limit
+    end
+    return @offset
+  end
   #Paragraph Count and Percent Methods  >>>
-  def self.getTranslatedParagraphsCount()
+  def self.getTranslatedParagraphsCount
     @translatedParagraphCount
   end
 
@@ -18,7 +28,7 @@ class Paragraph < ActiveRecord::Base
     @translatedParagraphCount = self.where("book_id =? And body > ? And translation_count > ? ",id,2,status).count
   end
 
-  def self.getAllParagraphsCount()
+  def self.getAllParagraphsCount
     @allParagraphsCount
   end
 
@@ -46,13 +56,31 @@ class Paragraph < ActiveRecord::Base
     return self.getTranslatedParagraphPercent(id,2)
   end
   
-  #Paragraph Retriver Methods >>>
-  def self.getAllParagraphs()
+  #ParagraphMethods >>>
+  def self.getAllParagraphs
     @allParagraphs
   end
   
-  #offset to skip how many objects needed. everypage should have offset added by limit.
+  #offset to skip how many objects needed. everypage should have offset added by  limit.
   def self.setAllParagraphs(id,size,offset)
     @allParagraphs = self.where("book_id =? And body > ?",id,2).limit(size).offset(offset)
   end
+
+  def self.getTranslatedParagraphs
+    @translatedParagraphs
+  end
+
+  #here the first status user translated is alos enough, set manualy
+  def self.setTranslatedParagraphs(id,size,offset)
+    @translatedParagraphs = self.where("book_id =? And body > ? And translation_count > ? ",id,2,0).limit(size).offset(offset)
+  end
+
+  def self.getUntranslatedParagraphs
+    @untranslatedParagraphs
+  end
+
+  def self.setUntranslatedParagraphs(id,size,offset)
+    @untranslatedParagraphs = self.where("book_id =? And body > ? And translation_count IS ? ",id,2,nil).limit(size).offset(offset)
+  end
+
 end
