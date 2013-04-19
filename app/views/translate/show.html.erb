@@ -1,13 +1,14 @@
 <script type="text/javascript">
 
 function getParagraphs(ParagraphId) {
-  var ParaSharp = "#"+ParagraphId;
-  $(ParaSharp).click(function()
+  var PType = paragraphType(ParagraphId);
+  $("#"+ParagraphId).click(function()
     {
+      var Plimit = getLimit();
       $.ajax({
         url:"getParagraphs.json",
         type: "POST",
-        data: {id:<%=params[:id]%>, limit:10},
+        data: {id:<%=params[:id]%>, limit: Plimit ,page:0,type:PType},
         dataType:"json"
           }).done(function(data) {
         var htmlpart=""
@@ -15,34 +16,97 @@ function getParagraphs(ParagraphId) {
           htmlpart = htmlpart + "<div class='span8'>"+data[i].paragraph.body+"</div>";
         }
         $("#changed").html(htmlpart);
-
-        $('i[id^="paragraphs"]').parent().parent().removeClass("active");
-        $('i[id^="paragraphs"]').hide();
-      
-        $(ParaSharp).prepend("<i class=\"icon-play\" id=\"paragraphs\" ></i>  ");
-        $(ParaSharp).parent().addClass("active");
+        menuSelector(ParagraphId);
       });
     });
 }
 
+function setLimit(LimitId) {
+    $("#"+LimitId).click(function()
+    {
+       menuSelector(LimitId);
+    });
+}
+
+/*
+get limits from limit menu and set it to the text, page also will be get and set with the pageination.
+*/
+function getLimit() {
+  var regEx = "a[id^=\"" +"Limit" + "\""+"]";
+  var ParentElement = $(regEx);
+  var limits = 10;
+  ParentElement.each(function() {
+        if ($(this).parent().hasClass("active")) {
+            limits = $(this).text();
+        }
+    });
+   return limits;
+}
+
+/*----------------------------------------------------------------------------------------------------------------*/
+/*  Menu selection just shows active menus and also add tick before the active element.                           */
+/*  DoNot Use same Ids for diffrent Menus, every menu should start with diffrent char.                             */
+/*  or you can use two chars setting the charAt(1) and so on.                                                     */
+/*----------------------------------------------------------------------------------------------------------------*/
+
+function menuSelector(Element) {
+        var FirstChar = Element.charAt(0);
+        var Hideable = FirstChar+"hide";
+        var regEx = "i[id^=\"" + Hideable + "\""+"]";
+        $(regEx).parent().parent().removeClass("active");
+        $(regEx).hide();
+        $("#"+ Element ).prepend("<i class=\"icon-ok\" id=\"" +Hideable+ "\" ></i>");
+        $("#"+ Element ).parent().addClass("active");
+}
+
+
+function paragraphType(type){
+    switch(type)
+  {
+      case "PNotTranslated":
+        return 0;
+        break;
+      case "PTranslated":
+        return 1;
+        break;
+      case "PAll":
+        return 2;
+        break;
+  }    
+}
+
+//This method generates dynamic element manipulations for the JQuery. 
+//works for getParagraphs, SetLimit
+
+function getDynamicFunctions(IdArray,FunctionName){
+for (var i=0; i < IdArray.length; i++) {
+  var IdElement = IdArray[i];
+  FunctionName(IdElement);
+  }
+}
+
 $(document).ready(function()
   {
-    var options = new Array("PTranslated","PNotTranslated","PAll");
-    for (var i = 0; i < options.length; ++i) {
-     var ParagraphId = options[i];
-     getParagraphs(ParagraphId);
-    }
+    getDynamicFunctions(Array("PTranslated","PNotTranslated","PAll"),getParagraphs);
+    getDynamicFunctions(Array("Limit10","Limit50","Limit100"),setLimit);
   });
 
 </script>
   <div class="row-fluid">
-    <div class="span9">
+    <div class="span8">
       <%book = @book%>
       <%percent = @percent %>
       <%= book.title %>
       by <b><%=book.author%></b>
       Translated <%=percent%> %
-      
+    </div>
+      <div class="btn-group">
+      <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">Limit<span class="caret"></span></button>
+        <ul class="dropdown-menu" style="white-space:nowrap">
+          <li><a id="Limit10" href="#">10</a></li>
+          <li><a id="Limit50" href="#">50</a></li>
+          <li><a id="Limit100" href="#">100</a></li>
+        </ul>
     </div>
     <div class="btn-group">
       <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">Paragraphs <span class="caret"></span></button>
@@ -70,6 +134,17 @@ $(document).ready(function()
 
   </div>
   <div class="row">
-    <div id="changed">
+    <div class="span8" id="changed">
     </div>
   </div>
+      <div class="pagination pagination-centered">
+    <ul>
+    <li><a href="#">Prev</a></li>
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li><a href="#">Next</a></li>
+    </ul>
+    </div>
