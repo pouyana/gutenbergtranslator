@@ -43,6 +43,75 @@ function getLimit() {
    return limits;
 }
 
+
+//NextButton management not very stable, experimental.
+function NextButton(){
+$("#Next").click(function(){
+
+function isNumber (o) {
+  return ! isNaN (o-0);
+}
+Array.min = function( array ){
+    return Math.min.apply( Math, array );
+};
+
+A=$("#Next").parent().siblings();
+NumberArray = new Array;
+A.each(function(){
+if (isNumber($(this).children().text())) {
+NumberArray.push(($(this).children().text()));
+}
+});
+var min = Array.min(NumberArray);
+A.each(function(){
+if ($(this).children().text()==min) {
+    var Num=parseInt($(this).children().text())+NumberArray.length;
+    $("#Next").parent().before( "<li><a href=\"#\">"+Num+"</a></li>");
+    $("#Prev").parent().next().remove();
+}
+});
+
+
+});
+
+}
+
+//very experimental lots of duplicates.
+function PrevButton() {
+$("#Prev").click(function(){
+
+function isNumber (o) {
+  return ! isNaN (o-0);
+}
+Array.min = function( array ){
+    return Math.min.apply( Math, array );
+};
+
+Array.max = function( array ){
+    return Math.max.apply( Math, array );
+};
+
+A=$("#Next").parent().siblings();
+NumberArray = new Array;
+A.each(function(){
+if (isNumber($(this).children().text())) {
+NumberArray.push(($(this).children().text()));
+}
+});
+var max = Array.max(NumberArray);
+A.each(function(){
+if ($(this).children().text()==max) {
+    var Num=parseInt($(this).children().text())-NumberArray.length;
+    if (Num > 0) {
+    $("#Prev").parent().after( "<li><a href=\"#\">"+Num+"</a></li>");
+    $("#Next").parent().prev().remove();
+    }
+}
+});
+});
+}
+
+
 /*----------------------------------------------------------------------------------------------------------------*/
 /*  Menu selection just shows active menus and also add tick before the active element.                           */
 /*  DoNot Use same Ids for diffrent Menus, every menu should start with diffrent char.                             */
@@ -77,7 +146,6 @@ function paragraphType(type){
 
 //This method generates dynamic element manipulations for the JQuery. 
 //works for getParagraphs, SetLimit
-
 function getDynamicFunctions(IdArray,FunctionName){
 for (var i=0; i < IdArray.length; i++) {
   var IdElement = IdArray[i];
@@ -89,6 +157,8 @@ $(document).ready(function()
   {
     getDynamicFunctions(Array("PTranslated","PNotTranslated","PAll"),getParagraphs);
     getDynamicFunctions(Array("Limit10","Limit50","Limit100"),setLimit);
+    NextButton();
+    PrevButton();
   });
 
 </script>
@@ -137,14 +207,14 @@ $(document).ready(function()
     <div class="span8" id="changed">
     </div>
   </div>
-      <div class="pagination pagination-centered">
+  <div class="pagination pagination-centered">
     <ul>
-    <li><a href="#">Prev</a></li>
+    <li><a id="Prev" href="#">Prev</a></li>
     <li><a href="#">1</a></li>
     <li><a href="#">2</a></li>
     <li><a href="#">3</a></li>
     <li><a href="#">4</a></li>
     <li><a href="#">5</a></li>
-    <li><a href="#">Next</a></li>
+    <li><a id="Next" href="#">Next</a></li>
     </ul>
-    </div>
+  </div>
