@@ -21,6 +21,7 @@ gem 'httparty'
 gem 'json'
 gem 'rabl'
 gem 'oj'
+gem "activerecord-import", ">= 0.2.0"
 #gem 'amazon-ecs'
 #gem 'wikipedia-client'
 gem 'jquery-rails'

@@ -1,114 +1,110 @@
 <script type="text/javascript">
 
-function getParagraphs(ParagraphId) {
-  var PType = paragraphType(ParagraphId);
-  $("#"+ParagraphId).click(function()
-    {
-      var Plimit = getLimit();
-      $.ajax({
-        url:"getParagraphs.json",
-        type: "POST",
-        data: {id:<%=params[:id]%>, limit: Plimit ,page:0,type:PType},
-        dataType:"json"
-          }).done(function(data) {
-        var htmlpart=""
-        for(var i=0;i<data.length;i++) {
-          htmlpart = htmlpart + "<div class='span8'>"+data[i].paragraph.body+"</div>";
-        }
-        $("#changed").html(htmlpart);
-        menuSelector(ParagraphId);
-      });
-    });
+  function getParagraphs(ParagraphId) {
+    var PType = paragraphType(ParagraphId);
+    $("#"+ParagraphId).click(function()
+        {
+        var Plimit = getLimit();
+        $.ajax({
+url:"getParagraphs.json",
+type: "POST",
+data: {id:<%=params[:id]%>, limit: Plimit ,page:0,type:PType},
+dataType:"json"
+}).done(function(data) {
+  var htmlpart=""
+  for(var i=0;i<data.length;i++) {
+  htmlpart = htmlpart + "<div class='span8'>"+data[i].paragraph.body+"</div>";
+  }
+  $("#changed").html(htmlpart);
+  menuSelector(ParagraphId);
+  });
+        });
 }
 
 function setLimit(LimitId) {
-    $("#"+LimitId).click(function()
-    {
-       menuSelector(LimitId);
-    });
+  $("#"+LimitId).click(function()
+      {
+      menuSelector(LimitId);
+      });
 }
 
 /*
-get limits from limit menu and set it to the text, page also will be get and set with the pageination.
-*/
+   get limits from limit menu and set it to the text, page also will be get and set with the pageination.
+ */
 function getLimit() {
   var regEx = "a[id^=\"" +"Limit" + "\""+"]";
   var ParentElement = $(regEx);
   var limits = 10;
   ParentElement.each(function() {
-        if ($(this).parent().hasClass("active")) {
-            limits = $(this).text();
-        }
-    });
-   return limits;
+      if ($(this).parent().hasClass("active")) {
+      limits = $(this).text();
+      }
+      });
+  return limits;
 }
 
 
 //NextButton management not very stable, experimental.
 function NextButton(){
-$("#Next").click(function(){
-
-function isNumber (o) {
-  return ! isNaN (o-0);
-}
-Array.min = function( array ){
-    return Math.min.apply( Math, array );
-};
-
-A=$("#Next").parent().siblings();
-NumberArray = new Array;
-A.each(function(){
-if (isNumber($(this).children().text())) {
-NumberArray.push(($(this).children().text()));
-}
-});
-var min = Array.min(NumberArray);
-A.each(function(){
-if ($(this).children().text()==min) {
-    var Num=parseInt($(this).children().text())+NumberArray.length;
-    $("#Next").parent().before( "<li><a href=\"#\">"+Num+"</a></li>");
-    $("#Prev").parent().next().remove();
-}
-});
-
-
-});
+  $("#Next").click(function(){
+      function isNumber (o) {
+      return ! isNaN (o-0);
+      }
+      Array.min = function( array ){
+      return Math.min.apply( Math, array );
+      };
+      A=$("#Next").parent().siblings();
+      NumberArray = new Array;
+      A.each(function(){
+        if (isNumber($(this).children().text())) {
+        NumberArray.push(($(this).children().text()));
+        }
+        });
+      var min = Array.min(NumberArray);
+      A.each(function(){
+        if ($(this).children().text()==min) {
+        var Num=parseInt($(this).children().text())+NumberArray.length;
+        $("#Next").parent().before( "<li><a href=\"#\">"+Num+"</a></li>");
+        $("#Prev").parent().next().remove();
+        }
+        });
+  });
 
 }
 
 //very experimental lots of duplicates.
 function PrevButton() {
-$("#Prev").click(function(){
+  $("#Prev").click(function(){
 
-function isNumber (o) {
-  return ! isNaN (o-0);
-}
-Array.min = function( array ){
-    return Math.min.apply( Math, array );
-};
+      function isNumber (o) {
+      return ! isNaN (o-0);
+      }
+      Array.min = function( array ){
+      return Math.min.apply( Math, array );
+      };
 
-Array.max = function( array ){
-    return Math.max.apply( Math, array );
-};
+      Array.max = function( array ){
+      return Math.max.apply( Math, array );
+      };
 
-A=$("#Next").parent().siblings();
-NumberArray = new Array;
-A.each(function(){
-if (isNumber($(this).children().text())) {
-NumberArray.push(($(this).children().text()));
-}
-});
-var max = Array.max(NumberArray);
-A.each(function(){
-if ($(this).children().text()==max) {
-    var Num=parseInt($(this).children().text())-NumberArray.length;
-    if (Num > 0) {
-    $("#Prev").parent().after( "<li><a href=\"#\">"+Num+"</a></li>");
-    $("#Next").parent().prev().remove();
-    }
-}
-});
-});
+      A=$("#Next").parent().siblings();
+      NumberArray = new Array;
+      A.each(function(){
+        if (isNumber($(this).children().text())) {
+        NumberArray.push(($(this).children().text()));
+        }
+        });
+      var max = Array.max(NumberArray);
+      A.each(function(){
+          if ($(this).children().text()==max) {
+          var Num=parseInt($(this).children().text())-NumberArray.length;
+          if (Num > 0) {
+          $("#Prev").parent().after( "<li><a href=\"#\">"+Num+"</a></li>");
+          $("#Next").parent().prev().remove();
+          }
+          }
+          });
+  });
 }
 
 
@@ -119,49 +115,49 @@ if ($(this).children().text()==max) {
 /*----------------------------------------------------------------------------------------------------------------*/
 
 function menuSelector(Element) {
-        var FirstChar = Element.charAt(0);
-        var Hideable = FirstChar+"hide";
-        var regEx = "i[id^=\"" + Hideable + "\""+"]";
-        $(regEx).parent().parent().removeClass("active");
-        $(regEx).hide();
-        $("#"+ Element ).prepend("<i class=\"icon-ok\" id=\"" +Hideable+ "\" ></i>");
-        $("#"+ Element ).parent().addClass("active");
+  var FirstChar = Element.charAt(0);
+  var Hideable = FirstChar+"hide";
+  var regEx = "i[id^=\"" + Hideable + "\""+"]";
+  $(regEx).parent().parent().removeClass("active");
+  $(regEx).hide();
+  $("#"+ Element ).prepend("<i class=\"icon-ok\" id=\"" +Hideable+ "\" ></i>");
+  $("#"+ Element ).parent().addClass("active");
 }
 
 
 function paragraphType(type){
-    switch(type)
+  switch(type)
   {
-      case "PNotTranslated":
-        return 0;
-        break;
-      case "PTranslated":
-        return 1;
-        break;
-      case "PAll":
-        return 2;
-        break;
+    case "PNotTranslated":
+      return 0;
+      break;
+    case "PTranslated":
+      return 1;
+      break;
+    case "PAll":
+      return 2;
+      break;
   }    
 }
 
 //This method generates dynamic element manipulations for the JQuery. 
 //works for getParagraphs, SetLimit
 function getDynamicFunctions(IdArray,FunctionName){
-for (var i=0; i < IdArray.length; i++) {
-  var IdElement = IdArray[i];
-  FunctionName(IdElement);
+  for (var i=0; i < IdArray.length; i++) {
+    var IdElement = IdArray[i];
+    FunctionName(IdElement);
   }
 }
 
 $(document).ready(function()
-  {
+    {
     getDynamicFunctions(Array("PTranslated","PNotTranslated","PAll"),getParagraphs);
     getDynamicFunctions(Array("Limit10","Limit50","Limit100"),setLimit);
     NextButton();
     PrevButton();
-  });
+    });
 
-</script>
+  </script>
   <div class="row-fluid">
     <div class="span8">
       <%book = @book%>
@@ -170,36 +166,36 @@ $(document).ready(function()
       by <b><%=book.author%></b>
       Translated <%=percent%> %
     </div>
-      <div class="btn-group">
+    <div class="btn-group">
       <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">Limit<span class="caret"></span></button>
-        <ul class="dropdown-menu" style="white-space:nowrap">
-          <li><a id="Limit10" href="#">10</a></li>
-          <li><a id="Limit50" href="#">50</a></li>
-          <li><a id="Limit100" href="#">100</a></li>
-        </ul>
+      <ul class="dropdown-menu" style="white-space:nowrap">
+        <li><a id="Limit10" href="#">10</a></li>
+        <li><a id="Limit50" href="#">50</a></li>
+        <li><a id="Limit100" href="#">100</a></li>
+      </ul>
     </div>
     <div class="btn-group">
       <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">Paragraphs <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li><a id="PNotTranslated" href="#">Untranslated</a></li>
-          <li><a id="PTranslated" href="#">Translated</a></li>
-          <li><a id="PAll" href="#">All</a></li>
-        </ul>
+      <ul class="dropdown-menu">
+        <li><a id="PNotTranslated" href="#">Untranslated</a></li>
+        <li><a id="PTranslated" href="#">Translated</a></li>
+        <li><a id="PAll" href="#">All</a></li>
+      </ul>
     </div>
     <div class="btn-group">
       <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">Words<span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li><a href="#">Untranslated</a></li>
-          <li><a href="#">Translated</a></li>
-          <li><a href="#">All</a></li>
-        </ul>
+      <ul class="dropdown-menu">
+        <li><a href="#">Untranslated</a></li>
+        <li><a href="#">Translated</a></li>
+        <li><a href="#">All</a></li>
+      </ul>
     </div>
-      <div class="btn-group">
+    <div class="btn-group">
       <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">My Translations<span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li><a href="#">Words</a></li>
-          <li><a href="#">Paragraphs</a></li>
-        </ul>
+      <ul class="dropdown-menu">
+        <li><a href="#">Words</a></li>
+        <li><a href="#">Paragraphs</a></li>
+      </ul>
     </div>
 
   </div>
@@ -209,12 +205,12 @@ $(document).ready(function()
   </div>
   <div class="pagination pagination-centered">
     <ul>
-    <li><a id="Prev" href="#">Prev</a></li>
-    <li><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a id="Next" href="#">Next</a></li>
+      <li><a id="Prev" href="#">Prev</a></li>
+      <li><a href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li><a id="Next" href="#">Next</a></li>
     </ul>
   </div>

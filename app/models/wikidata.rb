@@ -46,7 +46,7 @@ class Wikidata
     @base = base
     return @base
   end
-  
+
   #Mines the ParsedPage, got by getParser method
   def dataMiner
     wikidata = Hash.new
@@ -66,37 +66,37 @@ class Wikidata
       end
     end
   end
-  
+
   #getter, checks if article exists.
   def getHasArticle
     @hasArticle
   end
-  
+
   #alias
   alias :hasArticle :getHasArticle
-  
+
   #setter, sets article existing or not
   def setHasArticle(value)
     @hasArticle = value
   end
-  
+
   #gives wikipedia url in local language
   def getWikipediaUrl
     @wikipediaUrl  
   end
-  
+
   #set wikipedia url in local language
   def setWikipediaUrl(value)
     @wikipediaUrl=value
   end
-  
+
   #counts articles existing in wikipedia about the subject in diffrent languages
   def getArticleCount
     @count
   end
   #alias
   alias :articleCount :getArticleCount
-  
+
   def articleCounter
     setArticleCount = 0
     counter = 0
@@ -122,7 +122,7 @@ class Wikidata
   def getArticleTitles
     @titles
   end
-  
+
   #set Article titles array
   def setArticleTitles(value)
     @titles = value

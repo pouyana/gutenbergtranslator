@@ -53,16 +53,19 @@ class Book < ActiveRecord::Base
   def self.textToParagraph(textFile,bookid)
     paragString=""
     c=0
+    paragraphs=[];
     textFile.each_line do |line|
         if(/\n/.match(line.to_s) and line.length>2)
           paragString=paragString+line.to_s
         else
-          tmp_paragraph= Paragraph.new(:book_id=>bookid,:body=>paragString)
-          tmp_paragraph.save
+          paragraphs << Paragraph.new(:book_id=>bookid,:body=>paragString)
           c=c+1
           paragString=""
         end
       end
+    paragraphs.each_slice(500) do |para|
+      Paragraph.import para
+    end
     return c
   end
   
