@@ -14,14 +14,14 @@ class TranslateController < ApplicationController
     @type = params[:type]
     @plimit = params[:limit]
     @id = params[:id]
-    @page = params[:page]
+    @page = (params[:page].to_i-1)
     @offset = Paragraph.offsetCalc(@page,@plimit)
     if (@plimit.to_i > 101) || not(@plimit.to_i > 0)
       @plimit = 10
     end
     case @type
       when "0"
-      Paragraph.setUntranslatedParagraphs(@id,@plimit,@offset)
+      Paragraph.setUntranslatedParagraphs(@id,(@plimit),@offset)
       @paragraphs = Paragraph.getUntranslatedParagraphs
       when "1"
       Paragraph.setTranslatedParagraphs(@id,@plimit,@offset)

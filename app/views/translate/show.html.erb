@@ -1,216 +1,280 @@
 <script type="text/javascript">
-
-  function getParagraphs(ParagraphId) {
-    var PType = paragraphType(ParagraphId);
-    $("#"+ParagraphId).click(function()
-        {
-        var Plimit = getLimit();
-        $.ajax({
-url:"getParagraphs.json",
-type: "POST",
-data: {id:<%=params[:id]%>, limit: Plimit ,page:0,type:PType},
-dataType:"json"
-}).done(function(data) {
-  var htmlpart=""
-  for(var i=0;i<data.length;i++) {
-  htmlpart = htmlpart + "<div class='span8'>"+data[i].paragraph.body+"</div>";
-  }
-  $("#changed").html(htmlpart);
-  menuSelector(ParagraphId);
-  });
-        });
-}
-
-function setLimit(LimitId) {
-  $("#"+LimitId).click(function()
-      {
-      menuSelector(LimitId);
-      });
-}
-
-/*
-   get limits from limit menu and set it to the text, page also will be get and set with the pageination.
- */
-function getLimit() {
-  var regEx = "a[id^=\"" +"Limit" + "\""+"]";
-  var ParentElement = $(regEx);
-  var limits = 10;
-  ParentElement.each(function() {
-      if ($(this).parent().hasClass("active")) {
-      limits = $(this).text();
-      }
-      });
-  return limits;
-}
-
-
-//NextButton management not very stable, experimental.
-function NextButton(){
-  $("#Next").click(function(){
-      function isNumber (o) {
-      return ! isNaN (o-0);
-      }
-      Array.min = function( array ){
-      return Math.min.apply( Math, array );
-      };
-      A=$("#Next").parent().siblings();
-      NumberArray = new Array;
-      A.each(function(){
-        if (isNumber($(this).children().text())) {
-        NumberArray.push(($(this).children().text()));
+function ajaxCallParagraphs() {
+    var Page = getActivePage();
+    var Type = getParagraphType("Paragraph" + getActiveParagraph());
+    var Plimit = getActiveLimit();
+    $.ajax({
+        url: "getParagraphs.json",
+        type: "Post",
+        data: {
+            id: <%= params[:id] %> ,
+            limit: Plimit,
+            page: Page,
+            type: Type
+        },
+        dataType: "json"
+    }).done(function (data) {
+        var htmlpart = ""
+        for (var i = 0; i < data.length; i++) {
+            htmlpart = htmlpart + "<div class='span8'>" + data[i].paragraph.body + "</div>";
         }
-        });
-      var min = Array.min(NumberArray);
-      A.each(function(){
-        if ($(this).children().text()==min) {
-        var Num=parseInt($(this).children().text())+NumberArray.length;
-        $("#Next").parent().before( "<li><a href=\"#\">"+Num+"</a></li>");
-        $("#Prev").parent().next().remove();
-        }
-        });
-  });
-
-}
-
-//very experimental lots of duplicates.
-function PrevButton() {
-  $("#Prev").click(function(){
-
-      function isNumber (o) {
-      return ! isNaN (o-0);
-      }
-      Array.min = function( array ){
-      return Math.min.apply( Math, array );
-      };
-
-      Array.max = function( array ){
-      return Math.max.apply( Math, array );
-      };
-
-      A=$("#Next").parent().siblings();
-      NumberArray = new Array;
-      A.each(function(){
-        if (isNumber($(this).children().text())) {
-        NumberArray.push(($(this).children().text()));
-        }
-        });
-      var max = Array.max(NumberArray);
-      A.each(function(){
-          if ($(this).children().text()==max) {
-          var Num=parseInt($(this).children().text())-NumberArray.length;
-          if (Num > 0) {
-          $("#Prev").parent().after( "<li><a href=\"#\">"+Num+"</a></li>");
-          $("#Next").parent().prev().remove();
-          }
-          }
-          });
-  });
-}
-
-
-/*----------------------------------------------------------------------------------------------------------------*/
-/*  Menu selection just shows active menus and also add tick before the active element.                           */
-/*  DoNot Use same Ids for diffrent Menus, every menu should start with diffrent char.                             */
-/*  or you can use two chars setting the charAt(1) and so on.                                                     */
-/*----------------------------------------------------------------------------------------------------------------*/
-
-function menuSelector(Element) {
-  var FirstChar = Element.charAt(0);
-  var Hideable = FirstChar+"hide";
-  var regEx = "i[id^=\"" + Hideable + "\""+"]";
-  $(regEx).parent().parent().removeClass("active");
-  $(regEx).hide();
-  $("#"+ Element ).prepend("<i class=\"icon-ok\" id=\"" +Hideable+ "\" ></i>");
-  $("#"+ Element ).parent().addClass("active");
-}
-
-
-function paragraphType(type){
-  switch(type)
-  {
-    case "PNotTranslated":
-      return 0;
-      break;
-    case "PTranslated":
-      return 1;
-      break;
-    case "PAll":
-      return 2;
-      break;
-  }    
-}
-
-//This method generates dynamic element manipulations for the JQuery. 
-//works for getParagraphs, SetLimit
-function getDynamicFunctions(IdArray,FunctionName){
-  for (var i=0; i < IdArray.length; i++) {
-    var IdElement = IdArray[i];
-    FunctionName(IdElement);
-  }
-}
-
-$(document).ready(function()
-    {
-    getDynamicFunctions(Array("PTranslated","PNotTranslated","PAll"),getParagraphs);
-    getDynamicFunctions(Array("Limit10","Limit50","Limit100"),setLimit);
-    NextButton();
-    PrevButton();
+        $("#changed").html(htmlpart);
     });
+}
 
-  </script>
-  <div class="row-fluid">
-    <div class="span8">
-      <%book = @book%>
-      <%percent = @percent %>
-      <%= book.title %>
-      by <b><%=book.author%></b>
-      Translated <%=percent%> %
-    </div>
-    <div class="btn-group">
-      <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">Limit<span class="caret"></span></button>
-      <ul class="dropdown-menu" style="white-space:nowrap">
-        <li><a id="Limit10" href="#">10</a></li>
-        <li><a id="Limit50" href="#">50</a></li>
-        <li><a id="Limit100" href="#">100</a></li>
-      </ul>
-    </div>
-    <div class="btn-group">
-      <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">Paragraphs <span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        <li><a id="PNotTranslated" href="#">Untranslated</a></li>
-        <li><a id="PTranslated" href="#">Translated</a></li>
-        <li><a id="PAll" href="#">All</a></li>
-      </ul>
-    </div>
-    <div class="btn-group">
-      <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">Words<span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        <li><a href="#">Untranslated</a></li>
-        <li><a href="#">Translated</a></li>
-        <li><a href="#">All</a></li>
-      </ul>
-    </div>
-    <div class="btn-group">
-      <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">My Translations<span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        <li><a href="#">Words</a></li>
-        <li><a href="#">Paragraphs</a></li>
-      </ul>
-    </div>
+function isNumber(o) {
+    return !isNaN(o - 0);
+}
 
+Array.min = function (array) {
+    return Math.min.apply(Math, array);
+};
+
+Array.max = function (array) {
+    return Math.max.apply(Math, array);
+};
+
+function pagiUpdater(Id, Num) {
+    if (Id == "Next") {
+        $("#" + Id).parent().before("<li><a id=\"" + "Pagi" + Num + "\" href=\"#\">" + Num + "</a></li>");
+    } else {
+        $("#" + Id).parent().after("<li><a id=\"" + "Pagi" + Num + "\" href=\"#\">" + Num + "</a></li>");
+    }
+    var PagiNum = "Pagi" + Num;
+    getDynamicFunctions([PagiNum], actionPagi);
+}
+
+function getAllElements(Element, Type) {
+    var RegEx = Element + "[id^=\"" + Type + "\"" + "]";
+    var ParentElement = $(RegEx);
+    return ParentElement;
+}
+
+function getAllElementToArray(Element, Type) {
+    var Elements = getAllElements(Element, Type);
+    var IdArray = new Array;
+    Elements.each(function () {
+        IdArray.push($(this).attr('id'));
+    });
+    return IdArray;
+}
+
+function getActive(Element, Type, defaultvalue) {
+    var ParentElement = getAllElements(Element, Type);
+    var value = defaultvalue;
+    ParentElement.each(function () {
+        if ($(this).parent().hasClass("active")) {
+            value = $(this).text();
+        }
+    });
+    return value;
+}
+
+
+function getActiveLimit() {
+    return getActive("a", "Limit", 10);
+}
+
+function getActivePage() {
+    return getActive("a", "Pagi", 1);
+}
+
+function getActiveParagraph() {
+    return getActive("a", "Paragraph", "Untranslated");
+}
+
+function getAllButtons(Id) {
+    return AllButtons = $("#" + Id).parent().siblings();
+}
+
+function getNumberedButtons(Id) {
+    AllButtons = getAllButtons(Id);
+    NumberedButtonArray = new Array;
+    AllButtons.each(function () {
+        if (isNumber($(this).children().text())) {
+            NumberedButtonArray.push($(this));
+        }
+    });
+    return NumberedButtonArray;
+}
+
+function getNumberedButtonToIntArray(NumberedButtonArray) {
+    var NumberedButtonToIntArray = new Array;
+    for (var i = 0; i < NumberedButtonArray.length; i++) {
+        NumberedButtonToIntArray.push((NumberedButtonArray[i].children().text()));
+    }
+    return NumberedButtonToIntArray;
+}
+
+function getParagraphType(type) {
+    switch (type) {
+        case "ParagraphUntranslated":
+            return 0;
+            break;
+        case "ParagraphTranslated":
+            return 1;
+            break;
+        case "ParagraphAll":
+            return 2;
+            break;
+    }
+}
+
+function actionPagi(Element) {
+    $("#" + Element).click(function () {
+        $(this).parent().addClass("active");
+        $(this).parent().siblings().removeClass("active");
+        ajaxCallParagraphs();
+    });
+}
+
+function actionParagraph(ParagraphId) {
+    $("#" + ParagraphId).click(function () {
+        menuUpdater(ParagraphId);
+        ajaxCallParagraphs();
+        var Page = getActivePage();
+        if (!($("#Pagi" + Page).parent().hasClass("active"))) {
+            $("#Pagi" + Page).parent().addClass("active");
+        }
+    });
+}
+
+function actionLimit(LimitId) {
+    $("#" + LimitId).click(function () {
+        menuUpdater(LimitId);
+    });
+}
+
+
+function nextButton() {
+    var ButtonNext = "Next";
+    $("#Next").click(function () {
+        var AllButtons = getAllButtons(ButtonNext);
+        var NumberedButtons = getNumberedButtons(ButtonNext);
+        var NumberedButtonToInt = getNumberedButtonToIntArray(NumberedButtons);
+        var Minimum = Array.min(NumberedButtonToInt);
+        AllButtons.each(function () {
+            if ($(this).children().text() == Minimum) {
+                var Num = parseInt($(this).children().text()) + NumberedButtonToInt.length;
+                pagiUpdater(ButtonNext, Num);
+                var NextPrev = $("#Prev").parent().next();
+                if (NextPrev.hasClass("active")) {
+                    NextPrev.next().addClass("active");
+                    NextPrev.remove();
+                    ajaxCallParagraphs();
+                } else {
+                    NextPrev.remove();
+                }
+            }
+        });
+    });
+}
+
+function prevButton() {
+    var ButtonPrev = "Prev";
+    $("#Prev").click(function () {
+        var AllButtons = getAllButtons(ButtonPrev);
+        var NumberedButtons = getNumberedButtons(ButtonPrev);
+        var NumberedButtonToInt = getNumberedButtonToIntArray(NumberedButtons);
+        var Maximum = Array.max(NumberedButtonToInt);
+        AllButtons.each(function () {
+            if ($(this).children().text() == Maximum) {
+                var Num = parseInt($(this).children().text()) - NumberedButtonToInt.length;
+                if (Num > 0) {
+                    pagiUpdater(ButtonPrev, Num);
+                    var PrevNext = $("#Next").parent().prev();
+                    if (PrevNext.hasClass("active")) {
+                        PrevNext.prev().addClass("active");
+                        PrevNext.remove();
+                        ajaxCallParagraphs();
+                    } else {
+                        PrevNext.remove();
+                    }
+                }
+            }
+        });
+    });
+}
+
+function menuUpdater(Element) {
+    var FirstChars = Element.charAt(0) + Element.charAt(1) + Element.charAt(2);
+    var Hideable = FirstChars + "hide";
+    var regEx = "i[id^=\"" + Hideable + "\"" + "]";
+    $(regEx).parent().parent().removeClass("active");
+    $(regEx).hide();
+    $("#" + Element).prepend("<i class=\"icon-ok\" id=\"" + Hideable + "\" ></i>");
+    $("#" + Element).parent().addClass("active");
+}
+
+
+function getDynamicFunctions(IdArray, FunctionName) {
+    for (var i = 0; i < IdArray.length; i++) {
+        var IdElement = IdArray[i];
+        FunctionName(IdElement);
+    }
+}
+
+$(document).ready(function () {
+    getDynamicFunctions(getAllElementToArray("a", "Paragraph"), actionParagraph);
+    getDynamicFunctions(getAllElementToArray("a", "Limit"), actionLimit);
+    getDynamicFunctions(getAllElementToArray("a", "Pagi"), actionPagi);
+    nextButton();
+    prevButton();
+});
+</script>
+<div class="row-fluid">
+  <div class="span8">
+    <%book = @book%>
+    <%percent = @percent %>
+    <%= book.title %>
+    by <b><%=book.author%></b>
+    Translated <%=percent%> %
   </div>
-  <div class="row">
-    <div class="span8" id="changed">
-    </div>
-  </div>
-  <div class="pagination pagination-centered">
-    <ul>
-      <li><a id="Prev" href="#">Prev</a></li>
-      <li><a href="#">1</a></li>
-      <li><a href="#">2</a></li>
-      <li><a href="#">3</a></li>
-      <li><a href="#">4</a></li>
-      <li><a href="#">5</a></li>
-      <li><a id="Next" href="#">Next</a></li>
+  <div class="btn-group">
+    <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">Limit<span class="caret"></span></button>
+    <ul class="dropdown-menu" style="white-space:nowrap">
+      <li><a id="Limit10" href="#">10</a></li>
+      <li><a id="Limit50" href="#">50</a></li>
+      <li><a id="Limit100" href="#">100</a></li>
     </ul>
   </div>
+  <div class="btn-group">
+    <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">Paragraphs <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a id="ParagraphUntranslated" href="#">Untranslated</a></li>
+      <li><a id="ParagraphTranslated" href="#">Translated</a></li>
+      <li><a id="ParagraphAll" href="#">All</a></li>
+    </ul>
+  </div>
+  <div class="btn-group">
+    <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">Words<span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a href="#">Untranslated</a></li>
+      <li><a href="#">Translated</a></li>
+      <li><a href="#">All</a></li>
+    </ul>
+  </div>
+  <div class="btn-group">
+    <button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">My Translations<span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a href="#">Words</a></li>
+      <li><a href="#">Paragraphs</a></li>
+    </ul>
+  </div>
+
+</div>
+<div class="row">
+  <div class="span8" id="changed">
+  </div>
+</div>
+<div class="pagination pagination-centered">
+  <ul>
+    <li><a id="Prev"  href="#">Prev</a></li>
+    <li><a id="Pagi1" href="#">1</a></li>
+    <li><a id="Pagi2" href="#">2</a></li>
+    <li><a id="Pagi3" href="#">3</a></li>
+    <li><a id="Pagi4" href="#">4</a></li>
+    <li><a id="Pagi5" href="#">5</a></li>
+    <li><a id="Next"  href="#">Next</a></li>
+  </ul>
+</div>
