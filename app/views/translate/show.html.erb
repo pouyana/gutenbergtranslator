@@ -14,11 +14,19 @@ function ajaxCallParagraphs() {
         },
         dataType: "json"
     }).done(function (data) {
-        var htmlpart = ""
+        var parttobeadded = "<div class='accordion' id='accordion2'>";
         for (var i = 0; i < data.length; i++) {
-            htmlpart = htmlpart + "<div class='span8'>" + data[i].paragraph.body + "</div>";
+            htmlprefix = "<div class='accordion-group'> <div class='accordion-heading'> <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion2' href='#collapse"+i+"'>";
+            htmltitle = data[i].paragraph.body.charAt(0) + i;
+            htmlprefix2 = "<div id='collapse"+i+"' class='accordion-body collapse'><div class='accordion-inner'>";
+            htmlsuffix =  "</a></div>";
+            htmlbuttonlist = "<div class='row-fluid'><button class='btn btn-small btn-primary'>Translate</button></div>";
+            htmlpart = data[i].paragraph.body;
+            htmlsuffix2 = "</div></div></div>";
+            parttobeadded = parttobeadded + htmlprefix+htmltitle+htmlsuffix+htmlprefix2+htmlpart+htmlbuttonlist+htmlsuffix2;
         }
-        $("#changed").html(htmlpart);
+        parttobeadded = parttobeadded+" </div>";
+        $("#changed").html(parttobeadded);
     });
 }
 
@@ -121,10 +129,12 @@ function getParagraphType(type) {
 }
 
 function actionPagi(Element) {
-    $("#" + Element).click(function () {
+  $("#" + Element).click(function () {
+        if(!($(this).parent().hasClass("active"))){
         $(this).parent().addClass("active");
         $(this).parent().siblings().removeClass("active");
         ajaxCallParagraphs();
+      }
     });
 }
 
@@ -263,9 +273,9 @@ $(document).ready(function () {
   </div>
 
 </div>
-<div class="row">
-  <div class="span8" id="changed">
-  </div>
+<div class="row-fluid">
+       <div id="changed">
+ </div>
 </div>
 <div class="pagination pagination-centered">
   <ul>
