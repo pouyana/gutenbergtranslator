@@ -17,13 +17,14 @@ function ajaxCallParagraphs() {
         var parttobeadded = "<div class='accordion' id='accordion2'>";
         for (var i = 0; i < data.length; i++) {
             htmlprefix = "<div class='accordion-group'> <div class='accordion-heading'> <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion2' href='#collapse"+i+"'>";
-            htmltitle = data[i].paragraph.body.charAt(0) + i;
+            htmltitle = data[i].paragraph.body.substring(0,40) + "...";
             htmlprefix2 = "<div id='collapse"+i+"' class='accordion-body collapse'><div class='accordion-inner'>";
             htmlsuffix =  "</a></div>";
+            htmltextbox = "<div class='row-fluid'><textarea class='span9' id='TextArea"+i+"' rows='3'></textarea></div>";
             htmlbuttonlist = "<div class='row-fluid'><button class='btn btn-small btn-primary'>Translate</button></div>";
-            htmlpart = data[i].paragraph.body;
+            htmlpart = "<div class='span9'>"+data[i].paragraph.body+"</div>";
             htmlsuffix2 = "</div></div></div>";
-            parttobeadded = parttobeadded + htmlprefix+htmltitle+htmlsuffix+htmlprefix2+htmlpart+htmlbuttonlist+htmlsuffix2;
+            parttobeadded = parttobeadded + htmlprefix+htmltitle+htmlsuffix+htmlprefix2+htmlpart+htmltextbox+htmlbuttonlist+htmlsuffix2;
         }
         parttobeadded = parttobeadded+" </div>";
         $("#changed").html(parttobeadded);
@@ -230,7 +231,7 @@ $(document).ready(function () {
     getDynamicFunctions(getAllElementToArray("a", "Pagi"), actionPagi);
     nextButton();
     prevButton();
-});
+    });
 </script>
 <div class="row-fluid">
   <div class="span8">
@@ -288,3 +289,4 @@ $(document).ready(function () {
     <li><a id="Next"  href="#">Next</a></li>
   </ul>
 </div>
+
